@@ -40,21 +40,21 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-m3/10 via-surface to-secondary-m3/10 flex items-center justify-center p-6">
-      <Card className="w-full max-w-md material-surface shadow-xl animate-scale-in">
+    <div className="min-h-screen bg-gradient-to-br from-primary/10 via-background to-secondary/10 flex items-center justify-center p-6">
+      <Card className="w-full max-w-md bg-card border border-border shadow-xl animate-scale-in">
         <CardHeader className="text-center space-y-4">
-          <div className="mx-auto w-16 h-16 bg-primary-m3 rounded-full flex items-center justify-center mb-4">
-            <Trophy className="w-8 h-8 text-white" />
+          <div className="mx-auto w-16 h-16 bg-primary rounded-full flex items-center justify-center mb-4">
+            <Trophy className="w-8 h-8 text-primary-foreground" />
           </div>
-          <CardTitle className="text-3xl font-bold text-on-surface">Easy Squash</CardTitle>
-          <CardDescription className="text-on-surface-variant text-lg">
+          <CardTitle className="text-3xl font-bold text-foreground">Easy Squash</CardTitle>
+          <CardDescription className="text-muted-foreground text-lg">
             Connectez-vous pour accéder à votre espace
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
-              <Label htmlFor="username" className="text-on-surface font-medium">
+              <Label htmlFor="username" className="text-foreground font-medium">
                 Nom d'utilisateur *
               </Label>
               <Input
@@ -62,13 +62,13 @@ const Login = () => {
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="material-input"
+                className="bg-background border-border text-foreground placeholder:text-muted-foreground"
                 placeholder="Entrez votre nom d'utilisateur"
                 required
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-on-surface font-medium">
+              <Label htmlFor="password" className="text-foreground font-medium">
                 Mot de passe *
               </Label>
               <div className="relative">
@@ -77,7 +77,7 @@ const Login = () => {
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="material-input pr-12"
+                  className="bg-background border-border text-foreground placeholder:text-muted-foreground pr-12"
                   placeholder="Entrez votre mot de passe"
                   required
                 />
@@ -85,26 +85,26 @@ const Login = () => {
                   type="button"
                   variant="ghost"
                   size="sm"
-                  className="absolute right-2 top-1/2 transform -translate-y-1/2 hover:bg-transparent"
+                  className="absolute right-2 top-1/2 transform -translate-y-1/2 hover:bg-accent text-muted-foreground hover:text-foreground"
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? (
-                    <EyeOff className="w-4 h-4 text-on-surface-variant" />
+                    <EyeOff className="w-4 h-4" />
                   ) : (
-                    <Eye className="w-4 h-4 text-on-surface-variant" />
+                    <Eye className="w-4 h-4" />
                   )}
                 </Button>
               </div>
             </div>
             <Button 
               type="submit" 
-              className="w-full material-button" 
+              className="w-full bg-primary text-primary-foreground hover:bg-primary/90" 
               disabled={isLoading}
             >
               {isLoading ? "Connexion..." : "Se connecter"}
             </Button>
             <div className="text-center">
-              <Button variant="link" className="text-primary-m3 hover:text-primary-m3/80">
+              <Button variant="link" className="text-primary hover:text-primary/80">
                 Mot de passe oublié ?
               </Button>
             </div>
