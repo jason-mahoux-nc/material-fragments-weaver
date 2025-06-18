@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronRight, Calendar, Users, Clock } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useToast } from "@/hooks/use-toast";
+import { api } from "@/api";
 
 const SessionCreate = () => {
   const [openSections, setOpenSections] = useState<string[]>(["planning"]);
@@ -19,7 +20,8 @@ const SessionCreate = () => {
     );
   };
 
-  const handleCreateSession = () => {
+  const handleCreateSession = async () => {
+    await api.createSeance({});
     toast({
       title: "Séance créée avec succès",
       description: "Votre nouvelle séance a été programmée",

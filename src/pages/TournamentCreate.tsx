@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Calendar, Clock, Trophy, Euro } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { api } from "@/api";
 
 const TournamentCreate = () => {
   const [formData, setFormData] = useState({
@@ -22,8 +23,9 @@ const TournamentCreate = () => {
   });
   const { toast } = useToast();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    await api.createTournament(formData);
     toast({
       title: "Tournoi créé avec succès",
       description: "Votre nouveau tournoi a été enregistré",

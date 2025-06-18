@@ -9,40 +9,25 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Trophy, Calendar, Users, Euro, Plus } from "lucide-react";
+import { Trophy, Calendar, Users, Euro, Plus, Trash2 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { api } from "@/api";
 
 const Tournaments = () => {
-  // Données d'exemple pour les tournois
-  const upcomingTournaments = [
-    {
-      id: 1,
-      name: "Tournoi de Printemps",
-      date: "2024-03-15",
-      time: "09:00",
-      participants: 16,
-      fee: 25,
-      status: "Inscrit"
-    },
-    {
-      id: 2,
-      name: "Championnat Club",
-      date: "2024-03-22",
-      time: "14:00",
-      participants: 24,
-      fee: 30,
-      status: "En attente"
-    },
-    {
-      id: 3,
-      name: "Tournoi Inter-clubs",
-      date: "2024-04-05",
-      time: "10:00",
-      participants: 32,
-      fee: 40,
-      status: "Ouvert"
-    }
-  ];
+  const [tournaments, setTournaments] = useState<any[]>([]);
+
+  useEffect(() => {
+    api
+      .getTournaments()
+      .then(setTournaments)
+      .catch(() => setTournaments([]));
+  }, []);
+
+  const handleDelete = async (id: string) => {
+    await api.deleteTournament(id);
+    setTournaments((prev) => prev.filter((t) => t.id !== id));
+  };
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -78,9 +63,9 @@ const Tournaments = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {upcomingTournaments.map((tournament, index) => (
-            <Card 
-              key={tournament.id} 
+          {tournaments.map((tournament, index) => (
+            <Card
+              key={tournament.id}
               className="hover:shadow-lg transition-shadow duration-200 animate-fade-in"
               style={{ animationDelay: `${index * 100}ms` }}
             >
@@ -89,42 +74,40 @@ const Tournaments = () => {
                   <CardTitle className="text-xl font-semibold text-black">
                     {tournament.name}
                   </CardTitle>
-                  <Badge className={getStatusColor(tournament.status)}>
-                    {tournament.status}
+                  <Badge className={getStatusColor('Ouvert')}>
+                    Ouvert
                   </Badge>
                 </div>
               </CardHeader>
               <CardContent className="space-y-4 h-full">
                 <div className="flex items-center gap-3 text-gray-600">
                   <Calendar className="w-5 h-5" />
-                  <span>{new Date(tournament.date).toLocaleDateString('fr-FR')} à {tournament.time}</span>
+                  <span>{new Date(tournament.date).toLocaleDateString('fr-FR')} à {tournament.startHour}</span>
                 </div>
-                
+
                 <div className="flex items-center gap-3 text-gray-600">
                   <Users className="w-5 h-5" />
-                  <span>{tournament.participants} participants</span>
+                  <span>{tournament.inscriptions?.length ?? 0} participants</span>
                 </div>
-                
+
                 <div className="flex items-center gap-3 text-gray-600">
                   <Euro className="w-5 h-5" />
-                  <span>{tournament.fee}€</span>
+                  <span>{tournament.price}€</span>
                 </div>
               </CardContent>
               <CardActions className="flex gap-2">
                   <Button variant="outline" className="flex-1 text-black border-black hover:bg-gray-100">
                     Voir détails
                   </Button>
-                  {tournament.status === "Ouvert" && (
-                    <Button className="flex-1 bg-primary-m3 hover:bg-primary-m3/90 text-white">
-                      S'inscrire
-                    </Button>
-                  )}
+                  <Button className="flex-1 bg-destructive text-white" onClick={() => handleDelete(tournament.id)}>
+                    <Trash2 className="w-4 h-4" />
+                  </Button>
                 </CardActions>
             </Card>
           ))}
         </div>
 
-        {upcomingTournaments.length === 0 && (
+        {tournaments.length === 0 && (
           <Card className="text-center py-12">
             <CardContent>
               <Trophy className="w-16 h-16 text-gray-400 mx-auto mb-4" />
