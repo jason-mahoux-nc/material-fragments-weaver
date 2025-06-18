@@ -94,7 +94,7 @@ const Tournaments = () => {
                   </Badge>
                 </div>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-4 h-full">
                 <div className="flex items-center gap-3 text-gray-600">
                   <Calendar className="w-5 h-5" />
                   <span>{new Date(tournament.date).toLocaleDateString('fr-FR')} à {tournament.time}</span>
@@ -109,8 +109,8 @@ const Tournaments = () => {
                   <Euro className="w-5 h-5" />
                   <span>{tournament.fee}€</span>
                 </div>
-
-                <CardActions className="flex gap-2">
+              </CardContent>
+              <CardActions className="flex gap-2">
                   <Button variant="outline" className="flex-1 text-black border-black hover:bg-gray-100">
                     Voir détails
                   </Button>
@@ -120,7 +120,6 @@ const Tournaments = () => {
                     </Button>
                   )}
                 </CardActions>
-              </CardContent>
             </Card>
           ))}
         </div>

@@ -11,6 +11,8 @@ import TournamentCreate from "./pages/TournamentCreate";
 import Participants from "./pages/Participants";
 import Registration from "./pages/Registration";
 import NotFound from "./pages/NotFound";
+import Sessions from "./pages/Sessions";
+import Tournaments from "./pages/Tournaments";
 
 const queryClient = new QueryClient();
 
