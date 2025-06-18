@@ -71,17 +71,17 @@ export function AppSidebar() {
 
   return (
     <Sidebar className="border-r border-surface-variant bg-surface">
-      <div className="p-6 border-b border-surface-variant">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-primary-m3 rounded-lg flex items-center justify-center">
-            <Trophy className="w-4 h-4 text-white" />
+      <div className="p-8">
+        <div className="flex items-center gap-4">
+          <div className="w-10 h-10 bg-primary-m3 rounded-lg flex items-center justify-center">
+            <Trophy className="w-5 h-5 text-white" />
           </div>
-          <h2 className="text-xl font-semibold text-on-surface">Easy Squash</h2>
+          <h2 className="text-xl font-semibold text-black whitespace-nowrap">Easy Squash</h2>
         </div>
       </div>
-      <SidebarContent className="p-4">
+      <SidebarContent className="px-6">
         <SidebarGroup>
-          <SidebarMenu>
+          <SidebarMenu className="space-y-3">
             {menuItems.map((item) => (
               <SidebarMenuItem key={item.title}>
                 {item.subItems ? (
@@ -90,25 +90,25 @@ export function AppSidebar() {
                     onOpenChange={() => toggleGroup(item.title)}
                   >
                     <CollapsibleTrigger asChild>
-                      <SidebarMenuButton className="w-full justify-between hover:bg-surface-container">
-                        <div className="flex items-center gap-3">
-                          <item.icon className="w-5 h-5" />
-                          <span className="font-medium">{item.title}</span>
+                      <SidebarMenuButton className="w-full justify-between hover:bg-surface-container py-3 px-4">
+                        <div className="flex items-center gap-4">
+                          <item.icon className="w-5 h-5 text-black" />
+                          <span className="font-medium text-black whitespace-nowrap">{item.title}</span>
                         </div>
-                        <ChevronDown className={`w-4 h-4 transition-transform ${openGroups.includes(item.title) ? 'rotate-180' : ''}`} />
+                        <ChevronDown className={`w-4 h-4 transition-transform text-black ${openGroups.includes(item.title) ? 'rotate-180' : ''}`} />
                       </SidebarMenuButton>
                     </CollapsibleTrigger>
                     <CollapsibleContent>
-                      <SidebarMenuSub>
+                      <SidebarMenuSub className="mt-2 ml-2">
                         {item.subItems.map((subItem) => (
-                          <SidebarMenuSubItem key={subItem.title}>
+                          <SidebarMenuSubItem key={subItem.title} className="mb-1">
                             <SidebarMenuSubButton 
                               asChild 
                               isActive={location.pathname === subItem.url}
-                              className="hover:bg-primary-m3/10"
+                              className="hover:bg-primary-m3/10 py-2 px-4"
                             >
                               <Link to={subItem.url}>
-                                <span>{subItem.title}</span>
+                                <span className="text-black whitespace-nowrap">{subItem.title}</span>
                               </Link>
                             </SidebarMenuSubButton>
                           </SidebarMenuSubItem>
@@ -120,11 +120,11 @@ export function AppSidebar() {
                   <SidebarMenuButton 
                     asChild 
                     isActive={location.pathname === item.url}
-                    className="hover:bg-surface-container"
+                    className="hover:bg-surface-container py-3 px-4"
                   >
                     <Link to={item.url || "#"}>
-                      <item.icon className="w-5 h-5" />
-                      <span className="font-medium">{item.title}</span>
+                      <item.icon className="w-5 h-5 text-black" />
+                      <span className="font-medium text-black whitespace-nowrap">{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
                 )}
