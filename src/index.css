@@ -8,83 +8,83 @@
 
 @layer base {
   :root {
-    --background: 254 247 255;
-    --foreground: 29 27 32;
+    --background: rgba(254, 247, 255, 1);
+    --foreground: rgba(29, 27, 32, 1);
 
-    --card: 254 247 255;
-    --card-foreground: 29 27 32;
+    --card: rgba(254, 247, 255, 1);
+    --card-foreground: rgba(29, 27, 32, 1);
 
-    --popover: 254 247 255;
-    --popover-foreground: 29 27 32;
+    --popover: rgba(254, 247, 255, 1);
+    --popover-foreground: rgba(29, 27, 32, 1);
 
-    --primary: 103 80 164;
-    --primary-foreground: 255 255 255;
+    --primary: rgba(103, 80, 164, 1);
+    --primary-foreground: rgba(255, 255, 255, 1);
 
-    --secondary: 98 91 113;
-    --secondary-foreground: 255 255 255;
+    --secondary: rgba(98, 91, 113, 1);
+    --secondary-foreground: rgba(255, 255, 255, 1);
 
-    --muted: 243 237 247;
-    --muted-foreground: 73 69 79;
+    --muted: rgba(125, 60, 152, 1);
+    --muted-foreground: rgba(125, 60, 152, 1);
 
-    --accent: 232 222 248;
-    --accent-foreground: 29 25 43;
+    --accent: rgba(232, 222, 248, 1);
+    --accent-foreground: rgba(29, 25, 43, 1);
 
-    --destructive: 186 26 26;
-    --destructive-foreground: 255 255 255;
+    --destructive: rgba(186, 26, 26, 1);
+    --destructive-foreground: rgba(255, 255, 255, 1);
 
-    --border: 231 221 236;
-    --input: 231 221 236;
-    --ring: 103 80 164;
+    --border: rgba(231, 221, 236, 1);
+    --input: rgba(231, 221, 236, 1);
+    --ring: rgba(103, 80, 164, 1);
 
     --radius: 12px;
 
-    --sidebar-background: 254 247 255;
-    --sidebar-foreground: 29 27 32;
-    --sidebar-primary: 103 80 164;
-    --sidebar-primary-foreground: 255 255 255;
-    --sidebar-accent: 243 237 247;
-    --sidebar-accent-foreground: 29 27 32;
-    --sidebar-border: 231 221 236;
-    --sidebar-ring: 103 80 164;
+    --sidebar-background: rgba(254, 247, 255, 1);
+    --sidebar-foreground: rgba(29, 27, 32, 1);
+    --sidebar-primary: rgba(103, 80, 164, 1);
+    --sidebar-primary-foreground: rgba(255, 255, 255, 1);
+    --sidebar-accent: rgba(243, 237, 247, 1);
+    --sidebar-accent-foreground: rgba(29, 27, 32, 1);
+    --sidebar-border: rgba(231, 221, 236, 1);
+    --sidebar-ring: rgba(103, 80, 164, 1);
   }
 
   .dark {
-    --background: 16 14 19;
-    --foreground: 230 225 229;
+    --background: rgba(16, 14, 19, 1);
+    --foreground: rgba(230, 225, 229, 1);
 
-    --card: 16 14 19;
-    --card-foreground: 230 225 229;
+    --card: rgba(16, 14, 19, 1);
+    --card-foreground: rgba(230, 225, 229, 1);
 
-    --popover: 16 14 19;
-    --popover-foreground: 230 225 229;
+    --popover: rgba(16, 14, 19, 1);
+    --popover-foreground: rgba(230, 225, 229, 1);
 
-    --primary: 208 188 255;
-    --primary-foreground: 33 0 93;
+    --primary: rgba(208, 188, 255, 1);
+    --primary-foreground: rgba(33, 0, 93, 1);
 
-    --secondary: 200 196 208;
-    --secondary-foreground: 29 25 43;
+    --secondary: rgba(200, 196, 208, 1);
+    --secondary-foreground: rgba(29, 25, 43, 1);
 
-    --muted: 39 35 42;
-    --muted-foreground: 202 196 208;
+    --muted: rgba(125, 60, 152, 1);
+    --muted-foreground: rgba(125, 60, 152, 1);
 
-    --accent: 39 35 42;
-    --accent-foreground: 230 225 229;
+    --accent: rgba(39, 35, 42, 1);
+    --accent-foreground: rgba(230, 225, 229, 1);
 
-    --destructive: 242 184 181;
-    --destructive-foreground: 65 0 2;
+    --destructive: rgba(242, 184, 181, 1);
+    --destructive-foreground: rgba(65, 0, 2, 1);
 
-    --border: 39 35 42;
-    --input: 39 35 42;
-    --ring: 208 188 255;
+    --border: rgba(39, 35, 42, 1);
+    --input: rgba(39, 35, 42, 1);
+    --ring: rgba(208, 188, 255, 1);
 
-    --sidebar-background: 16 14 19;
-    --sidebar-foreground: 230 225 229;
-    --sidebar-primary: 208 188 255;
-    --sidebar-primary-foreground: 33 0 93;
-    --sidebar-accent: 39 35 42;
-    --sidebar-accent-foreground: 230 225 229;
-    --sidebar-border: 39 35 42;
-    --sidebar-ring: 208 188 255;
+    --sidebar-background: rgba(16, 14, 19, 1);
+    --sidebar-foreground: rgba(230, 225, 229, 1);
+    --sidebar-primary: rgba(208, 188, 255, 1);
+    --sidebar-primary-foreground: rgba(33, 0, 93, 1);
+    --sidebar-accent: rgba(39, 35, 42, 1);
+    --sidebar-accent-foreground: rgba(230, 225, 229, 1);
+    --sidebar-border: rgba(39, 35, 42, 1);
+    --sidebar-ring: rgba(208, 188, 255, 1);
   }
 }
 
