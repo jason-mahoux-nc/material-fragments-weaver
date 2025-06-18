@@ -1,6 +1,13 @@
 
 import { Layout } from "@/components/Layout";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  CardActions,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Calendar, Clock, Edit, MapPin } from "lucide-react";
 
@@ -63,7 +70,7 @@ const Dashboard = () => {
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="flex items-center justify-between">
+                <div className="flex items-center gap-6 justify-between">
                   <div className="flex items-center gap-6">
                     <div className="flex items-center gap-2">
                       <Calendar className="w-5 h-5 text-primary-m3" />
@@ -74,11 +81,11 @@ const Dashboard = () => {
                       <span className="text-on-surface-variant">{course.time}</span>
                     </div>
                   </div>
-                  <Button className="material-button-outlined">
-                    Modifier
-                  </Button>
                 </div>
               </CardContent>
+              <CardActions className="justify-end">
+                <Button className="material-button-outlined">Modifier</Button>
+              </CardActions>
             </Card>
           ))}
         </div>

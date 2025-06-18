@@ -1,6 +1,14 @@
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu"
+import { MoreHorizontal } from "lucide-react"
 
 const Card = React.forwardRef<
   HTMLDivElement,
@@ -9,7 +17,7 @@ const Card = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      "rounded-lg border bg-card text-card-foreground shadow-sm",
+      "relative flex flex-col rounded-lg border bg-card text-card-foreground shadow-sm",
       className
     )}
     {...props}
@@ -76,4 +84,54 @@ const CardFooter = React.forwardRef<
 ))
 CardFooter.displayName = "CardFooter"
 
-export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent }
+const CardActions = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, children, ...props }, ref) => {
+  const actions = React.Children.toArray(children)
+  const mainAction = actions[0]
+  const additionalActions = actions.slice(1)
+  return (
+    <div
+      ref={ref}
+      className={cn(
+        "sticky bottom-0 z-10 flex gap-2 p-6 pt-0 bg-card",
+        className
+      )}
+      {...props}
+    >
+      {additionalActions.length <= 1 ? (
+        actions
+      ) : (
+        <>
+          {mainAction}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button size="icon" variant="outline">
+                <MoreHorizontal className="w-4 h-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="bg-card">
+              {additionalActions.map((action, i) => (
+                <DropdownMenuItem asChild key={i}>
+                  {action as React.ReactElement}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </>
+      )}
+    </div>
+  )
+})
+CardActions.displayName = "CardActions"
+
+export {
+  Card,
+  CardHeader,
+  CardFooter,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardActions,
+}

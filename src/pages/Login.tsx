@@ -4,7 +4,14 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  CardActions,
+} from "@/components/ui/card";
 import { Trophy, Eye, EyeOff } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -96,20 +103,22 @@ const Login = () => {
                 </Button>
               </div>
             </div>
-            <Button 
-              type="submit" 
-              className="w-full bg-primary text-primary-foreground hover:bg-primary/90" 
-              disabled={isLoading}
-            >
-              {isLoading ? "Connexion..." : "Se connecter"}
-            </Button>
-            <div className="text-center">
-              <Button variant="link" className="text-primary hover:text-primary/80">
-                Mot de passe oublié ?
+            <CardActions className="flex flex-col gap-2">
+              <Button
+                type="submit"
+                className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
+                disabled={isLoading}
+              >
+                {isLoading ? "Connexion..." : "Se connecter"}
               </Button>
-            </div>
-          </form>
-        </CardContent>
+              <div className="text-center">
+                <Button variant="link" className="text-primary hover:text-primary/80">
+                  Mot de passe oublié ?
+                </Button>
+              </div>
+            </CardActions>
+         </form>
+       </CardContent>
       </Card>
     </div>
   );

@@ -1,6 +1,12 @@
 
 import { Layout } from "@/components/Layout";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardActions,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Trophy, Calendar, Users, Euro, Plus } from "lucide-react";
@@ -104,7 +110,7 @@ const Tournaments = () => {
                   <span>{tournament.fee}€</span>
                 </div>
 
-                <div className="pt-4 flex gap-2">
+                <CardActions className="flex gap-2">
                   <Button variant="outline" className="flex-1 text-black border-black hover:bg-gray-100">
                     Voir détails
                   </Button>
@@ -113,7 +119,7 @@ const Tournaments = () => {
                       S'inscrire
                     </Button>
                   )}
-                </div>
+                </CardActions>
               </CardContent>
             </Card>
           ))}
