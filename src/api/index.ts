@@ -3,9 +3,11 @@ import { getAuthService } from '@/auth/auth.service';
 const BASE_URL = 'http://localhost:8089';
 
 async function request<T>(url: string, options: RequestInit = {}): Promise<T> {
-  const auth = getAuthService();
-  if ('ready' in auth && typeof (auth as any).ready === 'function') {
-    await (auth as any).ready();
+  const auth = getAuthService() as import('@/auth/auth.service').AuthService & {
+    ready?: () => Promise<void>;
+  };
+  if (typeof auth.ready === 'function') {
+    await auth.ready();
   }
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',

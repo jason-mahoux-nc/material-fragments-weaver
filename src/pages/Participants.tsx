@@ -12,8 +12,8 @@ import { api } from "@/api";
 const Participants = () => {
   const { toast } = useToast();
   const [tournamentId, setTournamentId] = useState<string>("");
-  const [participants, setParticipants] = useState<any[]>([]);
-  const [tournaments, setTournaments] = useState<any[]>([]);
+  const [participants, setParticipants] = useState<unknown[]>([]);
+  const [tournaments, setTournaments] = useState<unknown[]>([]);
 
   useEffect(() => {
     api

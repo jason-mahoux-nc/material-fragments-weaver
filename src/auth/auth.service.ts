@@ -1,4 +1,6 @@
 export interface AuthService {
+  /** Optional hook to wait for initialization */
+  ready?(): Promise<void>;
   login(options: AuthLoginOptions): void;
   isAuthenticated(): boolean;
   getToken(): string;

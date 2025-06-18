@@ -15,7 +15,7 @@ import { useEffect, useState } from "react";
 import { api } from "@/api";
 
 const Sessions = () => {
-  const [sessions, setSessions] = useState<any[]>([]);
+  const [sessions, setSessions] = useState<unknown[]>([]);
 
   useEffect(() => {
     api
