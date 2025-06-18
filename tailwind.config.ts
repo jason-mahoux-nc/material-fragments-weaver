@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,6 +62,52 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				// Material 3 inspired colors
+				surface: {
+					DEFAULT: '#fef7ff',
+					container: '#f3edf7',
+					containerHigh: '#ede1ec',
+					containerHighest: '#e7dde4',
+					dim: '#ddd5db',
+					bright: '#fef7ff',
+					variant: '#e7e0ec'
+				},
+				'on-surface': {
+					DEFAULT: '#1d1b20',
+					variant: '#49454f'
+				},
+				'primary-m3': {
+					DEFAULT: '#6750a4',
+					container: '#eaddff'
+				},
+				'on-primary': {
+					DEFAULT: '#ffffff',
+					container: '#21005d'
+				},
+				'secondary-m3': {
+					DEFAULT: '#625b71',
+					container: '#e8def8'
+				},
+				'on-secondary': {
+					DEFAULT: '#ffffff',
+					container: '#1d192b'
+				},
+				tertiary: {
+					DEFAULT: '#7d5260',
+					container: '#ffd8e4'
+				},
+				'on-tertiary': {
+					DEFAULT: '#ffffff',
+					container: '#31111d'
+				},
+				error: {
+					DEFAULT: '#ba1a1a',
+					container: '#ffdad6'
+				},
+				'on-error': {
+					DEFAULT: '#ffffff',
+					container: '#410002'
 				}
 			},
 			borderRadius: {
@@ -84,11 +131,36 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'fade-in': {
+					'0%': {
+						opacity: '0',
+						transform: 'translateY(10px)'
+					},
+					'100%': {
+						opacity: '1',
+						transform: 'translateY(0)'
+					}
+				},
+				'scale-in': {
+					'0%': {
+						transform: 'scale(0.95)',
+						opacity: '0'
+					},
+					'100%': {
+						transform: 'scale(1)',
+						opacity: '1'
+					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'fade-in': 'fade-in 0.3s ease-out',
+				'scale-in': 'scale-in 0.2s ease-out'
+			},
+			fontFamily: {
+				sans: ['Inter', 'system-ui', 'sans-serif']
 			}
 		}
 	},
