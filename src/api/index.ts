@@ -4,6 +4,9 @@ const BASE_URL = 'http://localhost:8089';
 
 async function request<T>(url: string, options: RequestInit = {}): Promise<T> {
   const auth = getAuthService();
+  if ('ready' in auth && typeof (auth as any).ready === 'function') {
+    await (auth as any).ready();
+  }
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
   };
