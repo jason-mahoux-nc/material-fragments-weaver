@@ -4,7 +4,7 @@ import { AuthLoginOptions, AuthLogoutOptions, AuthService } from './auth.service
 const keycloakConfig: KeycloakConfig = {
   url: 'http://localhost:8082',
   realm: 'squash',
-  clientId: 'squash-frontend'
+  clientId: 'front'
 };
 
 export class KeycloakAuthService implements AuthService {
