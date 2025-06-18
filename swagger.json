@@ -1,0 +1,768 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8089",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/api/v1/inscriptions/pay/{inscriptionId}": {
+      "put": {
+        "tags": [
+          "inscription-controller"
+        ],
+        "operationId": "pay",
+        "parameters": [
+          {
+            "name": "inscriptionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Inscription"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/users": {
+      "post": {
+        "tags": [
+          "user-controller"
+        ],
+        "operationId": "create",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/users/new": {
+      "post": {
+        "tags": [
+          "user-controller"
+        ],
+        "operationId": "create_1",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/tournaments": {
+      "post": {
+        "tags": [
+          "tournament-controller"
+        ],
+        "operationId": "create_2",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTournamentApiDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Tournament"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/seances": {
+      "post": {
+        "tags": [
+          "seance-controller"
+        ],
+        "operationId": "create_3",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSeanceApiDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Seance"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/inscriptions": {
+      "post": {
+        "tags": [
+          "inscription-controller"
+        ],
+        "operationId": "create_4",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateInscriptionApiDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Inscription"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/inscriptions/public": {
+      "post": {
+        "tags": [
+          "inscription-controller"
+        ],
+        "operationId": "createPublic",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateInscriptionApiDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Inscription"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/users/me": {
+      "get": {
+        "tags": [
+          "user-controller"
+        ],
+        "operationId": "getMe",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/users/all": {
+      "get": {
+        "tags": [
+          "user-controller"
+        ],
+        "operationId": "getAll",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/tournaments/public/all": {
+      "get": {
+        "tags": [
+          "tournament-controller"
+        ],
+        "operationId": "getAllPublic",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Tournament"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/tournaments/all": {
+      "get": {
+        "tags": [
+          "tournament-controller"
+        ],
+        "operationId": "getAll_1",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Tournament"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/seances/all": {
+      "get": {
+        "tags": [
+          "seance-controller"
+        ],
+        "operationId": "getAll_2",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Seance"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/seance/types/all": {
+      "get": {
+        "tags": [
+          "seance-type-controller"
+        ],
+        "operationId": "getAll_3",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SeanceTypeDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/inscriptions/tournament/{tournamentId}": {
+      "get": {
+        "tags": [
+          "inscription-controller"
+        ],
+        "operationId": "getTournament",
+        "parameters": [
+          {
+            "name": "tournamentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Inscription"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/inscriptions/tournament/public/{tournamentId}": {
+      "get": {
+        "tags": [
+          "inscription-controller"
+        ],
+        "operationId": "getTournamentPublic",
+        "parameters": [
+          {
+            "name": "tournamentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/InscriptionPublicDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/inscriptions/all": {
+      "get": {
+        "tags": [
+          "inscription-controller"
+        ],
+        "operationId": "getAll_4",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Inscription"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/tournaments/{tournamentId}": {
+      "delete": {
+        "tags": [
+          "tournament-controller"
+        ],
+        "operationId": "delete",
+        "parameters": [
+          {
+            "name": "tournamentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/seances/{seanceId}": {
+      "delete": {
+        "tags": [
+          "seance-controller"
+        ],
+        "operationId": "delete_1",
+        "parameters": [
+          {
+            "name": "seanceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/inscriptions/{inscriptionId}": {
+      "delete": {
+        "tags": [
+          "inscription-controller"
+        ],
+        "operationId": "delete_2",
+        "parameters": [
+          {
+            "name": "inscriptionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Inscription": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "hasPaid": {
+            "type": "boolean"
+          },
+          "tournament": {
+            "$ref": "#/components/schemas/Tournament"
+          },
+          "user": {
+            "$ref": "#/components/schemas/User"
+          },
+          "totalPrice": {
+            "type": "number",
+            "format": "double"
+          },
+          "takeEat": {
+            "type": "boolean"
+          }
+        }
+      },
+      "Tournament": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "startHour": {
+            "type": "string",
+            "example": "10:43"
+          },
+          "price": {
+            "type": "number",
+            "format": "double"
+          },
+          "withEat": {
+            "type": "boolean"
+          },
+          "priceEat": {
+            "type": "number",
+            "format": "double"
+          },
+          "contentEat": {
+            "type": "string"
+          },
+          "createUser": {
+            "$ref": "#/components/schemas/User"
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "phoneNumber": {
+            "type": "string"
+          },
+          "inscriptions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Inscription"
+            }
+          },
+          "externalId": {
+            "type": "string"
+          }
+        }
+      },
+      "CreateUserDto": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "phoneNumber": {
+            "type": "string"
+          }
+        }
+      },
+      "CreateTournamentApiDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string"
+          },
+          "startHour": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number",
+            "format": "double"
+          },
+          "withEat": {
+            "type": "boolean"
+          },
+          "priceEat": {
+            "type": "number",
+            "format": "double"
+          },
+          "contentEat": {
+            "type": "string"
+          }
+        }
+      },
+      "CreateSeanceApiDto": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "startHour": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endHour": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "playersId": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "seanceType": {
+            "type": "string",
+            "enum": [
+              "INDIVIDUAL",
+              "COLLECTIVE"
+            ]
+          },
+          "theme": {
+            "type": "string"
+          }
+        }
+      },
+      "Seance": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "coach": {
+            "$ref": "#/components/schemas/User"
+          },
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "startHour": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endHour": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "players": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/User"
+            }
+          },
+          "seanceType": {
+            "type": "string",
+            "enum": [
+              "INDIVIDUAL",
+              "COLLECTIVE"
+            ]
+          },
+          "theme": {
+            "type": "string"
+          }
+        }
+      },
+      "CreateInscriptionApiDto": {
+        "type": "object",
+        "properties": {
+          "lastName": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "phoneNumber": {
+            "type": "string"
+          },
+          "tournamentId": {
+            "type": "string"
+          },
+          "withEat": {
+            "type": "boolean"
+          }
+        }
+      },
+      "SeanceTypeDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          }
+        }
+      },
+      "InscriptionPublicDto": {
+        "type": "object",
+        "properties": {
+          "lastname": {
+            "type": "string"
+          },
+          "firstname": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
