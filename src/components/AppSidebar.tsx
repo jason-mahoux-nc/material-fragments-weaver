@@ -82,7 +82,7 @@ export function AppSidebar() {
             <Trophy className="w-5 h-5 text-white" />
           </div>
           {!isCollapsed && (
-            <h2 className="text-xl font-semibold text-black whitespace-nowrap">Easy Squash</h2>
+            <h2 className="text-xl font-semibold text-sidebar-foreground whitespace-nowrap">Easy Squash</h2>
           )}
         </div>
       </div>
@@ -104,13 +104,13 @@ export function AppSidebar() {
                         tooltip={isCollapsed ? item.title : undefined}
                       >
                         <div className={`flex items-center ${isCollapsed ? '' : 'gap-4'}`}>
-                          <item.icon className="w-5 h-5 text-black flex-shrink-0" />
+                          <item.icon className="w-5 h-5 text-sidebar-foreground flex-shrink-0" />
                           {!isCollapsed && (
-                            <span className="font-medium text-black whitespace-nowrap">{item.title}</span>
+                            <span className="font-medium text-sidebar-foreground whitespace-nowrap">{item.title}</span>
                           )}
                         </div>
                         {!isCollapsed && (
-                          <ChevronDown className={`w-4 h-4 transition-transform text-black ${openGroups.includes(item.title) ? 'rotate-180' : ''}`} />
+                          <ChevronDown className={`w-4 h-4 transition-transform text-sidebar-foreground ${openGroups.includes(item.title) ? 'rotate-180' : ''}`} />
                         )}
                       </SidebarMenuButton>
                     </CollapsibleTrigger>
@@ -125,7 +125,7 @@ export function AppSidebar() {
                                 className="hover:bg-primary-m3/10 py-2 px-4"
                               >
                                 <Link to={subItem.url}>
-                                  <span className="text-black whitespace-nowrap">{subItem.title}</span>
+                                  <span className="text-sidebar-foreground whitespace-nowrap">{subItem.title}</span>
                                 </Link>
                               </SidebarMenuSubButton>
                             </SidebarMenuSubItem>
@@ -144,9 +144,9 @@ export function AppSidebar() {
                     tooltip={isCollapsed ? item.title : undefined}
                   >
                     <Link to={item.url || "#"}>
-                      <item.icon className="w-5 h-5 text-black flex-shrink-0" />
+                      <item.icon className="w-5 h-5 text-sidebar-foreground flex-shrink-0" />
                       {!isCollapsed && (
-                        <span className="font-medium text-black whitespace-nowrap">{item.title}</span>
+                        <span className="font-medium text-sidebar-foreground whitespace-nowrap">{item.title}</span>
                       )}
                     </Link>
                   </SidebarMenuButton>
