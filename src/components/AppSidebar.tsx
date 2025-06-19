@@ -23,8 +23,10 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const menuItems = [
   {
@@ -60,6 +62,9 @@ const menuItems = [
 export function AppSidebar() {
   const [openGroups, setOpenGroups] = useState<string[]>(["Gestion des tournois", "Gestion des séances"]);
   const location = useLocation();
+  const { state } = useSidebar();
+  const isMobile = useIsMobile();
+  const isCollapsed = state === "collapsed" && !isMobile;
 
   const toggleGroup = (title: string) => {
     setOpenGroups(prev => 
@@ -71,12 +76,14 @@ export function AppSidebar() {
 
   return (
     <Sidebar className="border-r border-surface-variant bg-surface">
-      <div className="p-8">
-        <div className="flex items-center gap-4">
-          <div className="w-10 h-10 bg-primary-m3 rounded-lg flex items-center justify-center">
+      <div className={`p-8 ${isCollapsed ? 'p-4' : 'p-8'}`}>
+        <div className={`flex items-center ${isCollapsed ? 'justify-center' : 'gap-4'}`}>
+          <div className="w-10 h-10 bg-primary-m3 rounded-lg flex items-center justify-center flex-shrink-0">
             <Trophy className="w-5 h-5 text-white" />
           </div>
-          <h2 className="text-xl font-semibold text-black whitespace-nowrap">Easy Squash</h2>
+          {!isCollapsed && (
+            <h2 className="text-xl font-semibold text-black whitespace-nowrap">Easy Squash</h2>
+          )}
         </div>
       </div>
       <SidebarContent className="px-6">
@@ -86,45 +93,61 @@ export function AppSidebar() {
               <SidebarMenuItem key={item.title}>
                 {item.subItems ? (
                   <Collapsible 
-                    open={openGroups.includes(item.title)}
-                    onOpenChange={() => toggleGroup(item.title)}
+                    open={openGroups.includes(item.title) && !isCollapsed}
+                    onOpenChange={() => !isCollapsed && toggleGroup(item.title)}
                   >
                     <CollapsibleTrigger asChild>
-                      <SidebarMenuButton className="w-full justify-between hover:bg-surface-container py-3 px-4">
-                        <div className="flex items-center gap-4">
-                          <item.icon className="w-5 h-5 text-black" />
-                          <span className="font-medium text-black whitespace-nowrap">{item.title}</span>
+                      <SidebarMenuButton 
+                        className={`w-full justify-between hover:bg-surface-container py-3 px-4 ${
+                          isCollapsed ? 'justify-center px-2' : ''
+                        }`}
+                        tooltip={isCollapsed ? item.title : undefined}
+                      >
+                        <div className={`flex items-center ${isCollapsed ? '' : 'gap-4'}`}>
+                          <item.icon className="w-5 h-5 text-black flex-shrink-0" />
+                          {!isCollapsed && (
+                            <span className="font-medium text-black whitespace-nowrap">{item.title}</span>
+                          )}
                         </div>
-                        <ChevronDown className={`w-4 h-4 transition-transform text-black ${openGroups.includes(item.title) ? 'rotate-180' : ''}`} />
+                        {!isCollapsed && (
+                          <ChevronDown className={`w-4 h-4 transition-transform text-black ${openGroups.includes(item.title) ? 'rotate-180' : ''}`} />
+                        )}
                       </SidebarMenuButton>
                     </CollapsibleTrigger>
-                    <CollapsibleContent>
-                      <SidebarMenuSub className="mt-2 ml-2">
-                        {item.subItems.map((subItem) => (
-                          <SidebarMenuSubItem key={subItem.title} className="mb-1">
-                            <SidebarMenuSubButton 
-                              asChild 
-                              isActive={location.pathname === subItem.url}
-                              className="hover:bg-primary-m3/10 py-2 px-4"
-                            >
-                              <Link to={subItem.url}>
-                                <span className="text-black whitespace-nowrap">{subItem.title}</span>
-                              </Link>
-                            </SidebarMenuSubButton>
-                          </SidebarMenuSubItem>
-                        ))}
-                      </SidebarMenuSub>
-                    </CollapsibleContent>
+                    {!isCollapsed && (
+                      <CollapsibleContent>
+                        <SidebarMenuSub className="mt-2 ml-2">
+                          {item.subItems.map((subItem) => (
+                            <SidebarMenuSubItem key={subItem.title} className="mb-1">
+                              <SidebarMenuSubButton 
+                                asChild 
+                                isActive={location.pathname === subItem.url}
+                                className="hover:bg-primary-m3/10 py-2 px-4"
+                              >
+                                <Link to={subItem.url}>
+                                  <span className="text-black whitespace-nowrap">{subItem.title}</span>
+                                </Link>
+                              </SidebarMenuSubButton>
+                            </SidebarMenuSubItem>
+                          ))}
+                        </SidebarMenuSub>
+                      </CollapsibleContent>
+                    )}
                   </Collapsible>
                 ) : (
                   <SidebarMenuButton 
                     asChild 
                     isActive={location.pathname === item.url}
-                    className="hover:bg-surface-container py-3 px-4"
+                    className={`hover:bg-surface-container py-3 px-4 ${
+                      isCollapsed ? 'justify-center px-2' : ''
+                    }`}
+                    tooltip={isCollapsed ? item.title : undefined}
                   >
                     <Link to={item.url || "#"}>
-                      <item.icon className="w-5 h-5 text-black" />
-                      <span className="font-medium text-black whitespace-nowrap">{item.title}</span>
+                      <item.icon className="w-5 h-5 text-black flex-shrink-0" />
+                      {!isCollapsed && (
+                        <span className="font-medium text-black whitespace-nowrap">{item.title}</span>
+                      )}
                     </Link>
                   </SidebarMenuButton>
                 )}
