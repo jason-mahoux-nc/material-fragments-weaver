@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Layout } from "@/components/Layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -9,19 +9,38 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@/components/ui/checkbox";
 import { UserPlus, Phone, Calendar, Euro, Clock } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { api } from "@/api";
 
 const Registration = () => {
   const [formData, setFormData] = useState({
     lastName: "",
     firstName: "",
     phoneNumber: "0123456789",
-    tournamentId: "squash-night",
+    tournamentId: "",
     withEat: false,
   });
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [tournaments, setTournaments] = useState<any[]>([]);
   const { toast } = useToast();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    api
+      .getTournaments()
+      .then((list) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        setTournaments(list as any[]);
+        if (list.length > 0 && !formData.tournamentId) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          setFormData((prev) => ({ ...prev, tournamentId: (list as any[])[0].id }));
+        }
+      })
+      .catch(() => setTournaments([]));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    await api.createInscription(formData);
     toast({
       title: "Inscription enregistrée",
       description: "Votre inscription a été prise en compte avec succès",
@@ -31,6 +50,8 @@ const Registration = () => {
   const handleInputChange = (field: string, value: string | boolean) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
+
+  const selectedTournament = tournaments.find(t => t.id === formData.tournamentId);
 
   return (
     <Layout>
@@ -114,30 +135,36 @@ const Registration = () => {
                 </Label>
                 <Select value={formData.tournamentId} onValueChange={(value) => handleInputChange("tournamentId", value)}>
                   <SelectTrigger className="bg-background border-border text-foreground">
-                    <SelectValue />
+                    <SelectValue placeholder="Sélectionner" />
                   </SelectTrigger>
                   <SelectContent className="bg-background border border-border">
-                    <SelectItem value="squash-night" className="text-foreground hover:bg-accent">Squash night</SelectItem>
-                    <SelectItem value="spring-tournament" className="text-foreground hover:bg-accent">Tournoi de printemps</SelectItem>
-                    <SelectItem value="summer-cup" className="text-foreground hover:bg-accent">Coupe d'été</SelectItem>
+                    {tournaments.map((t) => (
+                      <SelectItem key={t.id} value={t.id} className="text-foreground hover:bg-accent">
+                        {t.name}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
 
-              <div className="bg-muted/30 rounded-lg p-6 space-y-4 border border-border">
-                <div className="flex items-center gap-3">
-                  <Calendar className="w-5 h-5 text-primary" />
-                  <span className="font-medium text-foreground">Date du tournoi: 2024-12-23</span>
+              {selectedTournament && (
+                <div className="bg-muted/30 rounded-lg p-6 space-y-4 border border-border">
+                  <div className="flex items-center gap-3">
+                    <Calendar className="w-5 h-5 text-primary" />
+                    <span className="font-medium text-foreground">
+                      Date du tournoi: {new Date(selectedTournament.date).toLocaleDateString('fr-FR')}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <Clock className="w-5 h-5 text-secondary" />
+                    <span className="text-muted-foreground">Heure de début: {selectedTournament.startHour}</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <Euro className="w-5 h-5 text-primary" />
+                    <span className="font-semibold text-foreground">Prix total: {selectedTournament.price} euros</span>
+                  </div>
                 </div>
-                <div className="flex items-center gap-3">
-                  <Clock className="w-5 h-5 text-secondary" />
-                  <span className="text-muted-foreground">Heure de début: 19:00</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Euro className="w-5 h-5 text-primary" />
-                  <span className="font-semibold text-foreground">Prix total: 10.0 euros</span>
-                </div>
-              </div>
+              )}
 
               <div className="flex items-center space-x-3">
                 <Checkbox
