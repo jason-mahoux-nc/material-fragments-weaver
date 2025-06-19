@@ -16,6 +16,7 @@ const Registration = () => {
     lastName: "",
     firstName: "",
     phoneNumber: "0123456789",
+    email: "",
     tournamentId: "",
     withEat: false,
   });
@@ -118,6 +119,21 @@ const Registration = () => {
                   />
                   <Phone className="absolute left-3 top-3 w-5 h-5 text-muted-foreground" />
                 </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="email" className="text-foreground font-medium">
+                  Email *
+                </Label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={formData.email}
+                  onChange={(e) => handleInputChange("email", e.target.value)}
+                  className="bg-background border-border text-foreground placeholder:text-muted-foreground"
+                  placeholder="mon.email@example.com"
+                  required
+                />
               </div>
             </CardContent>
           </Card>
