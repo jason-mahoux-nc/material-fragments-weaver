@@ -31,6 +31,7 @@ const TournamentCreate = () => {
     toast({
       title: "Tournoi créé avec succès",
       description: "Votre nouveau tournoi a été enregistré",
+      variant: "success",
     });
     setFormData(initialFormData);
   };

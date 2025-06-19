@@ -38,6 +38,7 @@ const Participants = () => {
     toast({
       title: "Paiement validé",
       description: "Le paiement a été confirmé avec succès",
+      variant: "success",
     });
     setParticipants((prev) =>
       prev.map((p) => (p.id === inscriptionId ? { ...p, hasPaid: true } : p))
@@ -49,7 +50,7 @@ const Participants = () => {
     toast({
       title: "Participant supprimé",
       description: "Le participant a été retiré du tournoi",
-      variant: "destructive",
+      variant: "success",
     });
     setParticipants((prev) => prev.filter((p) => p.id !== inscriptionId));
   };

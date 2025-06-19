@@ -46,6 +46,7 @@ const Registration = () => {
       toast({
         title: "Inscription enregistrée",
         description: "Votre inscription a été prise en compte avec succès",
+        variant: "success",
       });
       setFormData({
         lastName: "",

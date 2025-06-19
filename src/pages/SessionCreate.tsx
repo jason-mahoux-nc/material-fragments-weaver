@@ -25,6 +25,7 @@ const SessionCreate = () => {
     toast({
       title: "Séance créée avec succès",
       description: "Votre nouvelle séance a été programmée",
+      variant: "success",
     });
   };
 
