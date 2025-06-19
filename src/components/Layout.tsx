@@ -3,17 +3,16 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "./AppSidebar";
 import { Button } from "@/components/ui/button";
 import { User, LogOut } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { getAuthService } from "@/auth/auth.service";
 
 interface LayoutProps {
   children: React.ReactNode;
 }
 
 export function Layout({ children }: LayoutProps) {
-  const navigate = useNavigate();
 
   const handleLogout = () => {
-    navigate("/login");
+    getAuthService().logout({ redirectUri: window.location.origin + "/login" });
   };
 
   return (
