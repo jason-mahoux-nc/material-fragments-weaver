@@ -9,55 +9,32 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, Clock, Users, MapPin, Plus } from "lucide-react";
+import { Calendar, Clock, Users, MapPin, Plus, Trash2 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { api } from "@/api";
 
 const Sessions = () => {
-  // Données d'exemple pour les séances
-  const upcomingSessions = [
-    {
-      id: 1,
-      title: "Entraînement technique",
-      date: "2024-03-12",
-      time: "18:00",
-      duration: "1h30",
-      participants: 8,
-      maxParticipants: 10,
-      court: "Court 1",
-      type: "Entraînement"
-    },
-    {
-      id: 2,
-      title: "Séance cardio",
-      date: "2024-03-14",
-      time: "19:30",
-      duration: "1h",
-      participants: 6,
-      maxParticipants: 8,
-      court: "Court 2",
-      type: "Fitness"
-    },
-    {
-      id: 3,
-      title: "Match amical",
-      date: "2024-03-16",
-      time: "14:00",
-      duration: "2h",
-      participants: 12,
-      maxParticipants: 16,
-      court: "Courts 1-2",
-      type: "Match"
-    }
-  ];
+  const [sessions, setSessions] = useState<any[]>([]);
+
+  useEffect(() => {
+    api
+      .getSeances()
+      .then(setSessions)
+      .catch(() => setSessions([]));
+  }, []);
+
+  const handleDelete = async (id: string) => {
+    await api.deleteSeance(id);
+    setSessions((prev) => prev.filter((s) => s.id !== id));
+  };
 
   const getTypeColor = (type: string) => {
     switch (type) {
-      case "Entraînement":
+      case "INDIVIDUAL":
         return "bg-blue-100 text-blue-800";
-      case "Fitness":
+      case "COLLECTIVE":
         return "bg-green-100 text-green-800";
-      case "Match":
-        return "bg-orange-100 text-orange-800";
       default:
         return "bg-gray-100 text-gray-800";
     }
@@ -84,19 +61,19 @@ const Sessions = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {upcomingSessions.map((session, index) => (
-            <Card 
-              key={session.id} 
+          {sessions.map((session, index) => (
+            <Card
+              key={session.id}
               className="hover:shadow-lg transition-shadow duration-200 animate-fade-in"
               style={{ animationDelay: `${index * 100}ms` }}
             >
               <CardHeader>
                 <div className="flex justify-between items-start">
                   <CardTitle className="text-xl font-semibold text-black">
-                    {session.title}
+                    {session.theme}
                   </CardTitle>
-                  <Badge className={getTypeColor(session.type)}>
-                    {session.type}
+                  <Badge className={getTypeColor(session.seanceType)}>
+                    {session.seanceType}
                   </Badge>
                 </div>
               </CardHeader>
@@ -105,35 +82,39 @@ const Sessions = () => {
                   <Calendar className="w-5 h-5" />
                   <span>{new Date(session.date).toLocaleDateString('fr-FR')}</span>
                 </div>
-                
+
                 <div className="flex items-center gap-3 text-gray-600">
                   <Clock className="w-5 h-5" />
-                  <span>{session.time} - {session.duration}</span>
+                  <span>
+                    {new Date(session.startHour).toLocaleTimeString('fr-FR', {hour: '2-digit', minute: '2-digit'})}
+                    {" - "}
+                    {new Date(session.endHour).toLocaleTimeString('fr-FR', {hour: '2-digit', minute: '2-digit'})}
+                  </span>
                 </div>
-                
+
                 <div className="flex items-center gap-3 text-gray-600">
                   <Users className="w-5 h-5" />
-                  <span>{session.participants}/{session.maxParticipants} participants</span>
+                  <span>{session.players?.length ?? 0} participants</span>
                 </div>
 
                 <div className="flex items-center gap-3 text-gray-600">
                   <MapPin className="w-5 h-5" />
-                  <span>{session.court}</span>
+                  <span>{session.court || '-'}</span>
                 </div>
               </CardContent>
               <CardActions className="flex gap-2">
                 <Button variant="outline" className="flex-1 text-black border-black hover:bg-gray-100">
                   Modifier
                 </Button>
-                <Button className="flex-1 bg-primary-m3 hover:bg-primary-m3/90 text-white">
-                  Voir détails
+                <Button className="flex-1 bg-destructive text-white" onClick={() => handleDelete(session.id)}>
+                  <Trash2 className="w-4 h-4" />
                 </Button>
               </CardActions>
             </Card>
           ))}
         </div>
 
-        {upcomingSessions.length === 0 && (
+        {sessions.length === 0 && (
           <Card className="text-center py-12">
             <CardContent>
               <Clock className="w-16 h-16 text-gray-400 mx-auto mb-4" />
