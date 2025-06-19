@@ -15,8 +15,8 @@ const Participants = () => {
   const [searchParams] = useSearchParams();
   const initialTournamentId = searchParams.get("tournamentId") || "";
   const [tournamentId, setTournamentId] = useState<string>(initialTournamentId);
-  const [participants, setParticipants] = useState<unknown[]>([]);
-  const [tournaments, setTournaments] = useState<unknown[]>([]);
+  const [participants, setParticipants] = useState<any[]>([]);
+  const [tournaments, setTournaments] = useState<any[]>([]);
 
   useEffect(() => {
     api
