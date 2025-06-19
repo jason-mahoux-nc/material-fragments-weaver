@@ -15,7 +15,7 @@ import { useEffect, useState } from "react";
 import { api } from "@/api";
 
 const Tournaments = () => {
-  const [tournaments, setTournaments] = useState<unknown[]>([]);
+  const [tournaments, setTournaments] = useState<any[]>([]);
 
   useEffect(() => {
     api

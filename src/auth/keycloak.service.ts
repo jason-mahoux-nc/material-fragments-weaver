@@ -25,7 +25,7 @@ const keycloakConfig: KeycloakConfig = {
 
     private init(config: KeycloakConfig): void {
       this.keycloak = new Keycloak(config);
-      this.initPromise = this.keycloak
+      this.keycloak
         .init({
           onLoad: 'check-sso',
           silentCheckSsoRedirectUri:
