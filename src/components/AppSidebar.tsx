@@ -15,8 +15,6 @@ import {
   Sidebar,
   SidebarContent,
   SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -86,7 +84,7 @@ export function AppSidebar() {
           )}
         </div>
       </div>
-      <SidebarContent className="px-6">
+      <SidebarContent>
         <SidebarGroup>
           <SidebarMenu className="space-y-3">
             {menuItems.map((item) => (
@@ -101,7 +99,6 @@ export function AppSidebar() {
                         className={`w-full justify-between hover:bg-surface-container py-3 px-4 ${
                           isCollapsed ? 'justify-center px-2' : ''
                         }`}
-                        tooltip={isCollapsed ? item.title : undefined}
                       >
                         <div className={`flex items-center ${isCollapsed ? '' : 'gap-4'}`}>
                           <item.icon className="w-5 h-5 text-sidebar-foreground flex-shrink-0" />
@@ -141,7 +138,6 @@ export function AppSidebar() {
                     className={`hover:bg-surface-container py-3 px-4 ${
                       isCollapsed ? 'justify-center px-2' : ''
                     }`}
-                    tooltip={isCollapsed ? item.title : undefined}
                   >
                     <Link to={item.url || "#"}>
                       <item.icon className="w-5 h-5 text-sidebar-foreground flex-shrink-0" />

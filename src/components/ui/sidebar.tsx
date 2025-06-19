@@ -160,19 +160,3 @@ export function SidebarMenuSubButton({ className, asChild, isActive, ...props }:
     />
   );
 }
-
-export {
-  Sidebar,
-  SidebarProvider,
-  SidebarTrigger,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarMenu,
-  SidebarMenuItem,
-  SidebarMenuButton,
-  SidebarMenuSub,
-  SidebarMenuSubItem,
-  SidebarMenuSubButton,
-  useSidebar,
-};
