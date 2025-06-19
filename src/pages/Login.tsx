@@ -10,9 +10,25 @@ import {
 } from "@/components/ui/card";
 import { Trophy } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { Navigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 const Login = () => {
   const { toast } = useToast();
+  const [ready, setReady] = useState(false);
+  const [isAuth, setIsAuth] = useState(false);
+
+  useEffect(() => {
+    async function init() {
+      if (typeof getAuthService().ready === "function") {
+        await getAuthService().ready!();
+      }
+      setIsAuth(getAuthService().isAuthenticated());
+      setReady(true);
+    }
+    init();
+  }, []);
+
   const handleLogin = () => {
     try {
       getAuthService().login({ redirectUri: window.location.origin + "/dashboard" });
@@ -24,6 +40,14 @@ const Login = () => {
       });
     }
   };
+
+  if (!ready) {
+    return null;
+  }
+
+  if (isAuth) {
+    return <Navigate to="/dashboard" replace />;
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/10 via-background to-secondary/10 flex items-center justify-center p-6">

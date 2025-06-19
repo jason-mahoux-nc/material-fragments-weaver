@@ -13,6 +13,7 @@ import Registration from "./pages/Registration";
 import NotFound from "./pages/NotFound";
 import Sessions from "./pages/Sessions";
 import Tournaments from "./pages/Tournaments";
+import { PrivateRoute } from "./components/PrivateRoute";
 
 const queryClient = new QueryClient();
 
@@ -25,14 +26,70 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Navigate to="/login" replace />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/session/create" element={<SessionCreate />} />
-          <Route path="/sessions" element={<Sessions />} />
-          <Route path="/tournament/create" element={<TournamentCreate />} />
-          <Route path="/tournaments" element={<Tournaments />} />
-          <Route path="/participants" element={<Participants />} />
-          <Route path="/registration" element={<Registration />} />
-          <Route path="/settings" element={<Dashboard />} />
+          <Route
+            path="/dashboard"
+            element={
+              <PrivateRoute>
+                <Dashboard />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/session/create"
+            element={
+              <PrivateRoute>
+                <SessionCreate />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/sessions"
+            element={
+              <PrivateRoute>
+                <Sessions />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/tournament/create"
+            element={
+              <PrivateRoute>
+                <TournamentCreate />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/tournaments"
+            element={
+              <PrivateRoute>
+                <Tournaments />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/participants"
+            element={
+              <PrivateRoute>
+                <Participants />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/registration"
+            element={
+              <PrivateRoute>
+                <Registration />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <PrivateRoute>
+                <Dashboard />
+              </PrivateRoute>
+            }
+          />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
