@@ -1,5 +1,6 @@
 
 import type { Config } from "tailwindcss";
+import animatePlugin from "tailwindcss-animate";
 import tailwindcssAnimate from "tailwindcss-animate";
 
 export default {
@@ -139,7 +140,7 @@ export default {
 						transform: 'translateY(10px)'
 					},
 					'100%': {
-						opacity: '1',
+        plugins: [animatePlugin],
 						transform: 'translateY(0)'
 					}
 				},
