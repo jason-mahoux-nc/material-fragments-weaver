@@ -51,7 +51,14 @@ const Participants = () => {
       description: "Le participant a été retiré du tournoi",
       variant: "destructive",
     });
-    setParticipants((prev) => prev.filter((p) => p.id !== inscriptionId));
+    if (tournamentId) {
+      api
+        .getParticipants(tournamentId)
+        .then(setParticipants)
+        .catch(() => setParticipants([]));
+    } else {
+      setParticipants((prev) => prev.filter((p) => p.id !== inscriptionId));
+    }
   };
 
   return (
