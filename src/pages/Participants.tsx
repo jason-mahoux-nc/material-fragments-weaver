@@ -52,7 +52,16 @@ const Participants = () => {
       description: "Le participant a été retiré du tournoi",
       variant: "success",
     });
-    setParticipants((prev) => prev.filter((p) => p.id !== inscriptionId));
+    if (tournamentId) {
+      try {
+        const list = await api.getParticipants(tournamentId);
+        setParticipants(list as any[]);
+      } catch {
+        setParticipants((prev) => prev.filter((p) => p.id !== inscriptionId));
+      }
+    } else {
+      setParticipants((prev) => prev.filter((p) => p.id !== inscriptionId));
+    }
   };
 
   return (

@@ -23,7 +23,8 @@ async function request<T>(url: string, options: RequestInit = {}): Promise<T> {
   if (!response.ok) {
     throw new Error(`API error: ${response.status}`);
   }
-  return response.json();
+  const text = await response.text();
+  return text ? (JSON.parse(text) as T) : ({} as T);
 }
 
 export const api = {
