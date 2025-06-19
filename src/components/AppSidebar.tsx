@@ -139,7 +139,7 @@ export function AppSidebar() {
                       isCollapsed ? 'justify-center px-2' : ''
                     }`}
                   >
-                    <Link to={item.url || "#"}>
+                    <Link to={item.url || "#"} className="flex items-center gap-4">
                       <item.icon className="w-5 h-5 text-sidebar-foreground flex-shrink-0" />
                       {!isCollapsed && (
                         <span className="font-medium text-sidebar-foreground whitespace-nowrap">{item.title}</span>
