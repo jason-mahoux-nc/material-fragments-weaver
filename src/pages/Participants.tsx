@@ -7,11 +7,14 @@ import { Badge } from "@/components/ui/badge";
 import { Trophy, Phone, CreditCard, Trash2, CheckCircle, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { api } from "@/api";
 
 const Participants = () => {
   const { toast } = useToast();
-  const [tournamentId, setTournamentId] = useState<string>("");
+  const [searchParams] = useSearchParams();
+  const initialTournamentId = searchParams.get("tournamentId") || "";
+  const [tournamentId, setTournamentId] = useState<string>(initialTournamentId);
   const [participants, setParticipants] = useState<unknown[]>([]);
   const [tournaments, setTournaments] = useState<unknown[]>([]);
 

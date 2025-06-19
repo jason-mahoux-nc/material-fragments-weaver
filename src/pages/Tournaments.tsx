@@ -10,12 +10,13 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Trophy, Calendar, Users, Euro, Plus, Trash2 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { api } from "@/api";
 
 const Tournaments = () => {
   const [tournaments, setTournaments] = useState<any[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     api
@@ -66,8 +67,9 @@ const Tournaments = () => {
           {tournaments.map((tournament, index) => (
             <Card
               key={tournament.id}
-              className="hover:shadow-lg transition-shadow duration-200 animate-fade-in"
+              className="hover:shadow-lg transition-shadow duration-200 animate-fade-in cursor-pointer"
               style={{ animationDelay: `${index * 100}ms` }}
+              onClick={() => navigate(`/participants?tournamentId=${tournament.id}`)}
             >
               <CardHeader>
                 <div className="flex justify-between items-start">
@@ -96,13 +98,21 @@ const Tournaments = () => {
                 </div>
               </CardContent>
               <CardActions className="flex gap-2">
-                  <Button variant="outline" className="flex-1 text-black border-black hover:bg-gray-100">
+                <Link to={`/participants?tournamentId=${tournament.id}`} className="flex-1" onClick={e => e.stopPropagation()}>
+                  <Button variant="outline" className="w-full text-black border-black hover:bg-gray-100">
                     Voir détails
                   </Button>
-                  <Button className="flex-1 bg-destructive text-white" onClick={() => handleDelete(tournament.id)}>
-                    <Trash2 className="w-4 h-4" />
-                  </Button>
-                </CardActions>
+                </Link>
+                <Button
+                  className="flex-1 bg-destructive text-white"
+                  onClick={e => {
+                    e.stopPropagation();
+                    handleDelete(tournament.id);
+                  }}
+                >
+                  <Trash2 className="w-4 h-4" />
+                </Button>
+              </CardActions>
             </Card>
           ))}
         </div>
