@@ -10,7 +10,7 @@ const keycloakConfig: KeycloakConfig = {
   export class KeycloakAuthService implements AuthService {
     private static instance: KeycloakAuthService;
     private keycloak: Keycloak | undefined;
-    private initPromise: Promise<void> = Promise.resolve();
+  private initPromise: Promise<void> = Promise.resolve();
 
   private constructor(config: KeycloakConfig) {
     this.init(config);
@@ -23,18 +23,19 @@ const keycloakConfig: KeycloakConfig = {
     return KeycloakAuthService.instance;
   }
 
-    private init(config: KeycloakConfig): void {
-      this.keycloak = new Keycloak(config);
-      this.keycloak
-        .init({
-          onLoad: 'check-sso',
-          silentCheckSsoRedirectUri:
-            window.location.origin + '/silent-check-sso.html',
-        })
-        .catch(err => {
-          console.error('Keycloak init failed', err);
-        });
-    }
+  private init(config: KeycloakConfig): void {
+    this.keycloak = new Keycloak(config);
+    this.initPromise = this.keycloak
+      .init({
+        onLoad: 'check-sso',
+        silentCheckSsoRedirectUri:
+          window.location.origin + '/silent-check-sso.html',
+      })
+      .then(() => {})
+      .catch(err => {
+        console.error('Keycloak init failed', err);
+      });
+  }
 
     /** Wait until the Keycloak client has finished initialisation */
     async ready(): Promise<void> {
