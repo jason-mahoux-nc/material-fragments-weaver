@@ -11,16 +11,18 @@ import { Calendar, Clock, Trophy, Euro } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { api } from "@/api";
 
+const initialFormData = {
+  name: "",
+  date: "",
+  startHour: "",
+  price: "",
+  withEat: false,
+  priceEat: "",
+  contentEat: "",
+};
+
 const TournamentCreate = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    date: "",
-    startHour: "",
-    price: "",
-    withEat: false,
-    priceEat: "",
-    contentEat: "",
-  });
+  const [formData, setFormData] = useState(initialFormData);
   const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -30,6 +32,7 @@ const TournamentCreate = () => {
       title: "Tournoi créé avec succès",
       description: "Votre nouveau tournoi a été enregistré",
     });
+    setFormData(initialFormData);
   };
 
   const handleInputChange = (field: string, value: string | boolean) => {
