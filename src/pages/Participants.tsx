@@ -4,38 +4,51 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { Trophy, Phone, Medal, CreditCard, Trash2, CheckCircle, X } from "lucide-react";
+import { Trophy, Phone, CreditCard, Trash2, CheckCircle, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useEffect, useState } from "react";
+import { api } from "@/api";
 
 const Participants = () => {
   const { toast } = useToast();
+  const [tournamentId, setTournamentId] = useState<string>("");
+  const [participants, setParticipants] = useState<unknown[]>([]);
+  const [tournaments, setTournaments] = useState<unknown[]>([]);
 
-  const participants = [
-    {
-      id: 1,
-      firstName: "Jason",
-      lastName: "Mahoux", 
-      phone: "0782691310",
-      ranking: "B2",
-      withMeal: false,
-      paymentStatus: "pending",
-      totalPrice: 10.0
-    }
-  ];
+  useEffect(() => {
+    api
+      .getTournaments()
+      .then(setTournaments)
+      .catch(() => setTournaments([]));
+  }, []);
 
-  const handleValidatePayment = (participantId: number) => {
+  useEffect(() => {
+    if (!tournamentId) return;
+    api
+      .getParticipants(tournamentId)
+      .then(setParticipants)
+      .catch(() => setParticipants([]));
+  }, [tournamentId]);
+
+  const handleValidatePayment = async (inscriptionId: string) => {
+    await api.updateInscriptionPayment(inscriptionId);
     toast({
       title: "Paiement validé",
       description: "Le paiement a été confirmé avec succès",
     });
+    setParticipants((prev) =>
+      prev.map((p) => (p.id === inscriptionId ? { ...p, hasPaid: true } : p))
+    );
   };
 
-  const handleDeleteParticipant = (participantId: number) => {
+  const handleDeleteParticipant = async (inscriptionId: string) => {
+    await api.deleteInscription(inscriptionId);
     toast({
       title: "Participant supprimé",
       description: "Le participant a été retiré du tournoi",
       variant: "destructive",
     });
+    setParticipants((prev) => prev.filter((p) => p.id !== inscriptionId));
   };
 
   return (
@@ -59,14 +72,16 @@ const Participants = () => {
                 <Trophy className="w-6 h-6 text-primary" />
                 Tournoi sélectionné
               </CardTitle>
-              <Select defaultValue="squash-night">
+              <Select value={tournamentId} onValueChange={setTournamentId}>
                 <SelectTrigger className="w-64 border-border bg-background text-black">
-                  <SelectValue />
+                  <SelectValue placeholder="Sélectionner" />
                 </SelectTrigger>
                 <SelectContent className="bg-background border border-border">
-                  <SelectItem value="squash-night" className="text-black hover:bg-accent">Squash night</SelectItem>
-                  <SelectItem value="spring-tournament" className="text-black hover:bg-accent">Tournoi de printemps</SelectItem>
-                  <SelectItem value="summer-cup" className="text-black hover:bg-accent">Coupe d'été</SelectItem>
+                  {tournaments.map(t => (
+                    <SelectItem key={t.id} value={t.id} className="text-black hover:bg-accent">
+                      {t.name}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
@@ -79,7 +94,6 @@ const Participants = () => {
                     <th className="text-left py-4 px-2 font-semibold text-black">Prénom</th>
                     <th className="text-left py-4 px-2 font-semibold text-black">Nom</th>
                     <th className="text-left py-4 px-2 font-semibold text-black">Téléphone</th>
-                    <th className="text-left py-4 px-2 font-semibold text-black">Classement</th>
                     <th className="text-center py-4 px-2 font-semibold text-black">Avec repas ?</th>
                     <th className="text-center py-4 px-2 font-semibold text-black">Paiement</th>
                     <th className="text-right py-4 px-2 font-semibold text-black">Prix total</th>
@@ -89,37 +103,31 @@ const Participants = () => {
                 <tbody>
                   {participants.map((participant) => (
                     <tr key={participant.id} className="border-b border-border/50 hover:bg-muted/50 transition-colors">
-                      <td className="py-4 px-2 text-black">{participant.firstName}</td>
-                      <td className="py-4 px-2 text-black font-medium">{participant.lastName}</td>
+                      <td className="py-4 px-2 text-black">{participant.user.firstName}</td>
+                      <td className="py-4 px-2 text-black font-medium">{participant.user.lastName}</td>
                       <td className="py-4 px-2 text-black">
                         <div className="flex items-center gap-2">
                           <Phone className="w-4 h-4" />
-                          {participant.phone}
+                          {participant.user.phoneNumber}
                         </div>
                       </td>
-                      <td className="py-4 px-2">
-                        <Badge variant="secondary" className="bg-secondary text-black">
-                          <Medal className="w-3 h-3 mr-1" />
-                          {participant.ranking}
-                        </Badge>
-                      </td>
                       <td className="py-4 px-2 text-center">
-                        {participant.withMeal ? (
+                        {participant.takeEat ? (
                           <CheckCircle className="w-5 h-5 text-green-600 mx-auto" />
                         ) : (
                           <X className="w-5 h-5 text-red-500 mx-auto" />
                         )}
                       </td>
                       <td className="py-4 px-2 text-center">
-                        {participant.paymentStatus === "pending" ? (
-                          <Badge variant="destructive" className="bg-destructive/20 text-black border-destructive/30">
-                            <X className="w-3 h-3 mr-1" />
-                            En attente
-                          </Badge>
-                        ) : (
+                        {participant.hasPaid ? (
                           <Badge className="bg-green-100 text-black border-green-200">
                             <CheckCircle className="w-3 h-3 mr-1" />
                             Validé
+                          </Badge>
+                        ) : (
+                          <Badge variant="destructive" className="bg-destructive/20 text-black border-destructive/30">
+                            <X className="w-3 h-3 mr-1" />
+                            En attente
                           </Badge>
                         )}
                       </td>

@@ -14,9 +14,9 @@ const Registration = () => {
   const [formData, setFormData] = useState({
     lastName: "",
     firstName: "",
-    phone: "0123456789",
-    tournament: "squash-night",
-    withMeal: false
+    phoneNumber: "0123456789",
+    tournamentId: "squash-night",
+    withEat: false,
   });
   const { toast } = useToast();
 
@@ -83,14 +83,14 @@ const Registration = () => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="phone" className="text-foreground font-medium">
+                <Label htmlFor="phoneNumber" className="text-foreground font-medium">
                   Téléphone *
                 </Label>
                 <div className="relative">
                   <Input
-                    id="phone"
-                    value={formData.phone}
-                    onChange={(e) => handleInputChange("phone", e.target.value)}
+                    id="phoneNumber"
+                    value={formData.phoneNumber}
+                    onChange={(e) => handleInputChange("phoneNumber", e.target.value)}
                     className="bg-background border-border text-foreground placeholder:text-muted-foreground pl-10"
                     placeholder="0123456789"
                     required
@@ -109,10 +109,10 @@ const Registration = () => {
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="tournament" className="text-foreground font-medium">
+                <Label htmlFor="tournamentId" className="text-foreground font-medium">
                   Tournoi
                 </Label>
-                <Select value={formData.tournament} onValueChange={(value) => handleInputChange("tournament", value)}>
+                <Select value={formData.tournamentId} onValueChange={(value) => handleInputChange("tournamentId", value)}>
                   <SelectTrigger className="bg-background border-border text-foreground">
                     <SelectValue />
                   </SelectTrigger>
@@ -140,12 +140,12 @@ const Registration = () => {
               </div>
 
               <div className="flex items-center space-x-3">
-                <Checkbox 
-                  id="withMeal"
-                  checked={formData.withMeal}
-                  onCheckedChange={(checked) => handleInputChange("withMeal", checked as boolean)}
+                <Checkbox
+                  id="withEat"
+                  checked={formData.withEat}
+                  onCheckedChange={(checked) => handleInputChange("withEat", checked as boolean)}
                 />
-                <Label htmlFor="withMeal" className="text-foreground font-medium">
+                <Label htmlFor="withEat" className="text-foreground font-medium">
                   Avec repas ?
                 </Label>
               </div>

@@ -9,21 +9,23 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Calendar, Clock, Trophy, Euro } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { api } from "@/api";
 
 const TournamentCreate = () => {
   const [formData, setFormData] = useState({
     name: "",
     date: "",
-    startTime: "",
-    participationFee: "",
-    withMeal: false,
-    mealPrice: "",
-    mealContent: ""
+    startHour: "",
+    price: "",
+    withEat: false,
+    priceEat: "",
+    contentEat: "",
   });
   const { toast } = useToast();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    await api.createTournament(formData);
     toast({
       title: "Tournoi créé avec succès",
       description: "Votre nouveau tournoi a été enregistré",
@@ -89,15 +91,15 @@ const TournamentCreate = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <Label htmlFor="startTime" className="text-on-surface font-medium">
+                  <Label htmlFor="startHour" className="text-on-surface font-medium">
                     Heure de début *
                   </Label>
                   <div className="relative">
                     <Input
-                      id="startTime"
+                      id="startHour"
                       type="time"
-                      value={formData.startTime}
-                      onChange={(e) => handleInputChange("startTime", e.target.value)}
+                      value={formData.startHour}
+                      onChange={(e) => handleInputChange("startHour", e.target.value)}
                       className="material-input"
                       required
                     />
@@ -105,15 +107,15 @@ const TournamentCreate = () => {
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="participationFee" className="text-on-surface font-medium">
+                  <Label htmlFor="price" className="text-on-surface font-medium">
                     Prix de la participation *
                   </Label>
                   <div className="relative">
                     <Input
-                      id="participationFee"
+                      id="price"
                       type="number"
-                      value={formData.participationFee}
-                      onChange={(e) => handleInputChange("participationFee", e.target.value)}
+                      value={formData.price}
+                      onChange={(e) => handleInputChange("price", e.target.value)}
                       className="material-input pl-10"
                       placeholder="0.00"
                       required
@@ -133,28 +135,28 @@ const TournamentCreate = () => {
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="flex items-center space-x-3">
-                <Checkbox 
-                  id="withMeal"
-                  checked={formData.withMeal}
-                  onCheckedChange={(checked) => handleInputChange("withMeal", checked as boolean)}
+                <Checkbox
+                  id="withEat"
+                  checked={formData.withEat}
+                  onCheckedChange={(checked) => handleInputChange("withEat", checked as boolean)}
                 />
-                <Label htmlFor="withMeal" className="text-on-surface font-medium">
+                <Label htmlFor="withEat" className="text-on-surface font-medium">
                   Avec repas ?
                 </Label>
               </div>
 
-              {formData.withMeal && (
+              {formData.withEat && (
                 <div className="space-y-4 animate-fade-in">
                   <div className="space-y-2">
-                    <Label htmlFor="mealPrice" className="text-on-surface font-medium">
+                    <Label htmlFor="priceEat" className="text-on-surface font-medium">
                       Prix du repas
                     </Label>
                     <div className="relative">
                       <Input
-                        id="mealPrice"
+                        id="priceEat"
                         type="number"
-                        value={formData.mealPrice}
-                        onChange={(e) => handleInputChange("mealPrice", e.target.value)}
+                        value={formData.priceEat}
+                        onChange={(e) => handleInputChange("priceEat", e.target.value)}
                         className="material-input pl-10"
                         placeholder="0.00"
                       />
@@ -162,13 +164,13 @@ const TournamentCreate = () => {
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="mealContent" className="text-on-surface font-medium">
+                    <Label htmlFor="contentEat" className="text-on-surface font-medium">
                       Contenu du repas
                     </Label>
                     <Textarea
-                      id="mealContent"
-                      value={formData.mealContent}
-                      onChange={(e) => handleInputChange("mealContent", e.target.value)}
+                      id="contentEat"
+                      value={formData.contentEat}
+                      onChange={(e) => handleInputChange("contentEat", e.target.value)}
                       className="material-input"
                       placeholder="Décrivez le menu proposé..."
                       rows={3}
