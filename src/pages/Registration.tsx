@@ -41,11 +41,27 @@ const Registration = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await api.createInscription(formData);
-    toast({
-      title: "Inscription enregistrée",
-      description: "Votre inscription a été prise en compte avec succès",
-    });
+    try {
+      await api.createInscription(formData);
+      toast({
+        title: "Inscription enregistrée",
+        description: "Votre inscription a été prise en compte avec succès",
+      });
+      setFormData({
+        lastName: "",
+        firstName: "",
+        phoneNumber: "0123456789",
+        email: "",
+        tournamentId: tournaments.length > 0 ? tournaments[0].id : "",
+        withEat: false,
+      });
+    } catch {
+      toast({
+        title: "Erreur lors de l'inscription",
+        description: "Veuillez réessayer plus tard",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleInputChange = (field: string, value: string | boolean) => {
