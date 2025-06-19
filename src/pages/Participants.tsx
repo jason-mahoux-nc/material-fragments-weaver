@@ -52,10 +52,12 @@ const Participants = () => {
       variant: "destructive",
     });
     if (tournamentId) {
-      api
-        .getParticipants(tournamentId)
-        .then(setParticipants)
-        .catch(() => setParticipants([]));
+      try {
+        const list = await api.getParticipants(tournamentId);
+        setParticipants(list as any[]);
+      } catch {
+        setParticipants((prev) => prev.filter((p) => p.id !== inscriptionId));
+      }
     } else {
       setParticipants((prev) => prev.filter((p) => p.id !== inscriptionId));
     }
