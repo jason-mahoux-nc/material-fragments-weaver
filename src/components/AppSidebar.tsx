@@ -62,9 +62,9 @@ const menuItems = [
 export function AppSidebar() {
   const [openGroups, setOpenGroups] = useState<string[]>(["Gestion des tournois", "Gestion des séances"]);
   const location = useLocation();
-  const { state } = useSidebar();
+  const { open } = useSidebar();
   const isMobile = useIsMobile();
-  const isCollapsed = state === "collapsed" && !isMobile;
+  const isCollapsed = !open && !isMobile;
 
   const toggleGroup = (title: string) => {
     setOpenGroups(prev => 
