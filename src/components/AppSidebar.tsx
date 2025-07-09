@@ -7,7 +7,8 @@ import {
   Settings,
   Home,
   Menu,
-  ChevronDown
+  ChevronDown,
+  Warehouse
 } from "lucide-react";
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
@@ -48,6 +49,12 @@ const menuItems = [
     subItems: [
       { title: "Création de séances", url: "/session/create" },
       { title: "Mes séances", url: "/sessions" },
+    ]
+  },
+  {
+    title: "Gestion de stock",
+    icon: Warehouse,
+    subItems: [
     ]
   },
   {
