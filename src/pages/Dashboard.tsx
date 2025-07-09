@@ -39,7 +39,7 @@ const Dashboard = () => {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-4xl font-bold text-on-surface mb-2">
-              Mes prochains cours
+              Mes prochaines activités
             </h1>
             <p className="text-on-surface-variant text-lg">
               Gérez vos cours et tournois de squash facilement
