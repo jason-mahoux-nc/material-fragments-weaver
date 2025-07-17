@@ -45,4 +45,8 @@ export const api = {
   deleteInscription: (inscriptionId: string) => request(`/api/v1/inscriptions/${inscriptionId}`, { method: 'DELETE' }),
   createInscription: (data: Record<string, unknown>) =>
     request('/api/v1/inscriptions', { method: 'POST', body: JSON.stringify(data) }),
+
+  getUsers: () => request<unknown[]>('/api/v1/users/all'),
+  createUser: (data: Record<string, unknown>) =>
+    request('/api/v1/users/new', { method: 'POST', body: JSON.stringify(data) }),
 };
