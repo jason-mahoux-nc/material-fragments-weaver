@@ -45,7 +45,7 @@ export function SidebarProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {}
+type SidebarProps = React.HTMLAttributes<HTMLDivElement>;
 export function Sidebar({ className, children, ...props }: SidebarProps) {
   const { open, setOpen, isMobile } = useSidebar();
 
@@ -122,7 +122,7 @@ interface SidebarMenuButtonProps extends React.ButtonHTMLAttributes<HTMLButtonEl
   isActive?: boolean;
 }
 export function SidebarMenuButton({ className, asChild, isActive, ...props }: SidebarMenuButtonProps) {
-  const Comp = asChild ? ("span" as any) : "button";
+  const Comp: React.ElementType = asChild ? "span" : "button";
   return (
     <Comp
       className={cn(
@@ -148,7 +148,7 @@ interface SidebarMenuSubButtonProps extends React.AnchorHTMLAttributes<HTMLAncho
   isActive?: boolean;
 }
 export function SidebarMenuSubButton({ className, asChild, isActive, ...props }: SidebarMenuSubButtonProps) {
-  const Comp = asChild ? ("span" as any) : "a";
+  const Comp: React.ElementType = asChild ? "span" : "a";
   return (
     <Comp
       className={cn(

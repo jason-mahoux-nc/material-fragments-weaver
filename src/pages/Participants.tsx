@@ -9,14 +9,15 @@ import { useToast } from "@/hooks/use-toast";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { api } from "@/api";
+import type { Participant, Tournament } from "@/types";
 
 const Participants = () => {
   const { toast } = useToast();
   const [searchParams] = useSearchParams();
   const initialTournamentId = searchParams.get("tournamentId") || "";
   const [tournamentId, setTournamentId] = useState<string>(initialTournamentId);
-  const [participants, setParticipants] = useState<any[]>([]);
-  const [tournaments, setTournaments] = useState<any[]>([]);
+  const [participants, setParticipants] = useState<Participant[]>([]);
+  const [tournaments, setTournaments] = useState<Tournament[]>([]);
 
   useEffect(() => {
     api
@@ -55,7 +56,7 @@ const Participants = () => {
     if (tournamentId) {
       try {
         const list = await api.getParticipants(tournamentId);
-        setParticipants(list as any[]);
+        setParticipants(list);
       } catch {
         setParticipants((prev) => prev.filter((p) => p.id !== inscriptionId));
       }

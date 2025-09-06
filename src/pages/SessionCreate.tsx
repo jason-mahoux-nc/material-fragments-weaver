@@ -1,32 +1,105 @@
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Layout } from "@/components/Layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ChevronRight, Calendar, Users, Clock } from "lucide-react";
+import { ChevronRight, Calendar, Users, Clock, Plus } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { api } from "@/api";
+import { RichTextEditor } from "@/components/RichTextEditor";
+import type { User, NewUser } from "@/types";
 
 const SessionCreate = () => {
   const [openSections, setOpenSections] = useState<string[]>(["planning"]);
+  const [planningData, setPlanningData] = useState<{ date: string; time: string; duration: string }>({ date: "", time: "", duration: "" });
+  const [contentData, setContentData] = useState<{ theme: string; description: string }>({ theme: "", description: "" });
+  const [users, setUsers] = useState<User[]>([]);
+  const [search, setSearch] = useState("");
+  const [selectedPlayers, setSelectedPlayers] = useState<User[]>([]);
+  const [newPlayer, setNewPlayer] = useState<NewUser>({ firstName: "", lastName: "", phoneNumber: "", email: "" });
   const { toast } = useToast();
 
+  useEffect(() => {
+    api
+      .getUsers()
+      .then(setUsers)
+      .catch(() => setUsers([]));
+  }, []);
+
   const toggleSection = (section: string) => {
-    setOpenSections(prev => 
-      prev.includes(section) 
+    setOpenSections(prev =>
+      prev.includes(section)
         ? prev.filter(item => item !== section)
         : [...prev, section]
     );
   };
 
+  const handlePlanningChange = (field: string, value: string) => {
+    setPlanningData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleContentChange = (field: string, value: string) => {
+    setContentData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleAddPlayer = (player: User) => {
+    if (!selectedPlayers.find(p => p.id === player.id)) {
+      setSelectedPlayers(prev => [...prev, player]);
+    }
+  };
+
+  const handleRemovePlayer = (id: string) => {
+    setSelectedPlayers(prev => prev.filter(p => p.id !== id));
+  };
+
+  const handleCreatePlayer = async () => {
+    const created = await api.createUser(newPlayer);
+    setUsers(prev => [...prev, created]);
+    setSelectedPlayers(prev => [...prev, created]);
+    setNewPlayer({ firstName: "", lastName: "", phoneNumber: "", email: "" });
+  };
+
   const handleCreateSession = async () => {
-    await api.createSeance({});
+    if (!planningData.date || !planningData.time || !planningData.duration || !contentData.theme || !contentData.description) {
+      toast({
+        title: "Champs manquants",
+        description: "Veuillez remplir tous les champs obligatoires",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const durationMatch = planningData.duration.match(/(\d+)h(?:(\d+))?/);
+    const hours = durationMatch ? parseInt(durationMatch[1]) : 0;
+    const minutes = durationMatch && durationMatch[2] ? parseInt(durationMatch[2]) : 0;
+
+    const start = new Date(`${planningData.date}T${planningData.time}`);
+    const end = new Date(start.getTime() + hours * 3600000 + minutes * 60000);
+
+    await api.createSeance({
+      date: planningData.date,
+      startHour: start.toISOString(),
+      endHour: end.toISOString(),
+      theme: contentData.theme,
+      playersId: selectedPlayers.map(p => p.id),
+      seanceType: 'COLLECTIVE',
+    });
+
     toast({
       title: "Séance créée avec succès",
       description: "Votre nouvelle séance a été programmée",
       variant: "success",
     });
+
+    setPlanningData({ date: "", time: "", duration: "" });
+    setContentData({ theme: "", description: "" });
+    setSelectedPlayers([]);
+    setSearch("");
+    setOpenSections(["planning"]);
   };
 
   const sections = [
@@ -96,12 +169,95 @@ const SessionCreate = () => {
                 </CollapsibleTrigger>
                 <CollapsibleContent>
                   <CardContent className="pt-0">
-                    <div className="p-6 bg-surface-container rounded-lg">
-                      <p className="text-on-surface-variant">
-                        Contenu de la section {section.title.toLowerCase()}...
-                      </p>
-                      {/* Add specific form fields for each section here */}
-                    </div>
+                    {section.id === "planning" && (
+                      <div className="p-6 bg-surface-container rounded-lg space-y-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="date">Date *</Label>
+                          <Input id="date" type="date" value={planningData.date} onChange={e => handlePlanningChange('date', e.target.value)} required />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="time">Heure *</Label>
+                          <Input id="time" type="time" value={planningData.time} onChange={e => handlePlanningChange('time', e.target.value)} required />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="duration">Durée *</Label>
+                          <Input id="duration" placeholder="1h30" value={planningData.duration} onChange={e => handlePlanningChange('duration', e.target.value)} required />
+                        </div>
+                      </div>
+                    )}
+                    {section.id === "content" && (
+                      <div className="p-6 bg-surface-container rounded-lg space-y-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="theme">Thème *</Label>
+                          <Input id="theme" value={contentData.theme} onChange={e => handleContentChange('theme', e.target.value)} required />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Description *</Label>
+                          <RichTextEditor value={contentData.description} onChange={value => handleContentChange('description', value)} />
+                        </div>
+                      </div>
+                    )}
+                    {section.id === "players" && (
+                      <div className="p-6 bg-surface-container rounded-lg space-y-4">
+                        <Input placeholder="Rechercher un joueur" value={search} onChange={e => setSearch(e.target.value)} />
+                        <div className="space-y-2 max-h-40 overflow-auto">
+                          {users
+                            .filter(u => `${u.firstName} ${u.lastName}`.toLowerCase().includes(search.toLowerCase()))
+                            .map(u => (
+                              <div key={u.id} className="flex justify-between items-center bg-surface-container-low p-2 rounded-md">
+                                <span>{u.firstName} {u.lastName}</span>
+                                <Button type="button" size="sm" onClick={() => handleAddPlayer(u)}>
+                                  Ajouter
+                                </Button>
+                              </div>
+                            ))}
+                          {users.filter(u => `${u.firstName} ${u.lastName}`.toLowerCase().includes(search.toLowerCase())).length === 0 && (
+                            <Dialog>
+                              <DialogTrigger asChild>
+                                <Button type="button" variant="outline" size="sm" className="w-full flex items-center gap-2">
+                                  <Plus className="w-4 h-4" /> Créer un joueur
+                                </Button>
+                              </DialogTrigger>
+                              <DialogContent>
+                                <DialogHeader>
+                                  <DialogTitle>Nouveau joueur</DialogTitle>
+                                </DialogHeader>
+                                <div className="space-y-4 py-4">
+                                  <div className="space-y-2">
+                                    <Label>Prénom *</Label>
+                                    <Input value={newPlayer.firstName} onChange={e => setNewPlayer(prev => ({ ...prev, firstName: e.target.value }))} required />
+                                  </div>
+                                  <div className="space-y-2">
+                                    <Label>Nom *</Label>
+                                    <Input value={newPlayer.lastName} onChange={e => setNewPlayer(prev => ({ ...prev, lastName: e.target.value }))} required />
+                                  </div>
+                                  <div className="space-y-2">
+                                    <Label>Téléphone</Label>
+                                    <Input value={newPlayer.phoneNumber} onChange={e => setNewPlayer(prev => ({ ...prev, phoneNumber: e.target.value }))} />
+                                  </div>
+                                  <div className="space-y-2">
+                                    <Label>Email</Label>
+                                    <Input type="email" value={newPlayer.email} onChange={e => setNewPlayer(prev => ({ ...prev, email: e.target.value }))} />
+                                  </div>
+                                </div>
+                                <DialogFooter>
+                                  <Button onClick={handleCreatePlayer}>Créer</Button>
+                                </DialogFooter>
+                              </DialogContent>
+                            </Dialog>
+                          )}
+                        </div>
+
+                        <div className="space-y-2">
+                          {selectedPlayers.map(p => (
+                            <div key={p.id} className="flex justify-between items-center bg-surface-container-low p-2 rounded-md">
+                              <span>{p.firstName} {p.lastName}</span>
+                              <Button type="button" variant="ghost" size="sm" onClick={() => handleRemovePlayer(p.id)}>❌</Button>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </CardContent>
                 </CollapsibleContent>
               </Card>
@@ -110,9 +266,10 @@ const SessionCreate = () => {
         </div>
 
         <div className="flex justify-center pt-8">
-          <Button 
+          <Button
             className="material-button px-12 py-4 text-lg"
             onClick={handleCreateSession}
+            disabled={!planningData.date || !planningData.time || !planningData.duration || !contentData.theme || !contentData.description || selectedPlayers.length === 0}
           >
             Créer la séance
           </Button>

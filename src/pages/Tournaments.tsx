@@ -13,9 +13,10 @@ import { Trophy, Calendar, Users, Euro, Plus, Trash2 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { api } from "@/api";
+import type { Tournament } from "@/types";
 
 const Tournaments = () => {
-  const [tournaments, setTournaments] = useState<any[]>([]);
+  const [tournaments, setTournaments] = useState<Tournament[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
