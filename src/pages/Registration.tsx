@@ -10,14 +10,17 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { UserPlus, Phone, Calendar, Euro, Clock } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { api } from "@/api";
+import { useSearchParams } from "react-router-dom";
 
 const Registration = () => {
+  const [searchParams] = useSearchParams();
+  const initialTournamentId = searchParams.get("tournamentId") || "";
   const [formData, setFormData] = useState({
     lastName: "",
     firstName: "",
     phoneNumber: "0123456789",
     email: "",
-    tournamentId: "",
+    tournamentId: initialTournamentId,
     withEat: false,
   });
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

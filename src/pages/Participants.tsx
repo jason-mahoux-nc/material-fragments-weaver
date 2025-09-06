@@ -4,15 +4,16 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { Trophy, Phone, CreditCard, Trash2, CheckCircle, X } from "lucide-react";
+import { Trophy, Phone, CreditCard, Trash2, CheckCircle, X, UserPlus } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { api } from "@/api";
 import type { Participant, Tournament } from "@/types";
 
 const Participants = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const initialTournamentId = searchParams.get("tournamentId") || "";
   const [tournamentId, setTournamentId] = useState<string>(initialTournamentId);
@@ -65,6 +66,14 @@ const Participants = () => {
     }
   };
 
+  const handleAddInscription = () => {
+    if (tournamentId) {
+      navigate(`/registration?tournamentId=${tournamentId}`);
+    } else {
+      navigate(`/registration`);
+    }
+  };
+
   return (
     <Layout>
       <div className="space-y-8 animate-fade-in">
@@ -77,6 +86,13 @@ const Participants = () => {
               Gérez les inscriptions aux tournois
             </p>
           </div>
+          <Button
+            className="bg-primary text-white hover:bg-primary/90"
+            onClick={handleAddInscription}
+          >
+            <UserPlus className="w-4 h-4 mr-2" />
+            Ajouter une inscription
+          </Button>
         </div>
 
         <Card className="material-surface">
