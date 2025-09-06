@@ -58,6 +58,13 @@ const menuItems = [
     ]
   },
   {
+    title: "Administration des utilisateurs",
+    icon: Users,
+    subItems: [
+      { title: "Tableau des utilisateurs", url: "/users" },
+    ]
+  },
+  {
     title: "Paramètres",
     url: "/settings",
     icon: Settings,

@@ -64,4 +64,8 @@ export const api = {
   getUsers: () => request<User[]>('/api/v1/users/all'),
   createUser: (data: NewUser) =>
     request<User>('/api/v1/users/new', { method: 'POST', body: JSON.stringify(data) }),
+  getUser: (userId: string) => request<User>(`/api/v1/users/${userId}`),
+  updateUser: (userId: string, data: Partial<NewUser>) =>
+    request(`/api/v1/users/${userId}`, { method: 'PUT', body: JSON.stringify(data) }),
+  deleteUser: (userId: string) => request(`/api/v1/users/${userId}`, { method: 'DELETE' }),
 };
