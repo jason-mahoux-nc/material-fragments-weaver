@@ -21,10 +21,21 @@ async function request<T>(url: string, options: RequestInit = {}): Promise<T> {
     headers,
     ...options,
   });
-  if (!response.ok) {
-    throw new Error(`API error: ${response.status}`);
-  }
   const text = await response.text();
+  if (!response.ok) {
+    let message = `API error: ${response.status}`;
+    try {
+      const data = text ? JSON.parse(text) : {};
+      if (data.message) {
+        message = data.message;
+      }
+    } catch {
+      if (text) {
+        message = text;
+      }
+    }
+    throw new Error(message);
+  }
   return text ? (JSON.parse(text) as T) : ({} as T);
 }
 

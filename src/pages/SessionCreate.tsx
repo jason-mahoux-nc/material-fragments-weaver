@@ -81,10 +81,19 @@ const SessionCreate = () => {
   };
 
   const handleCreatePlayer = async () => {
-    const created = await api.createUser(newPlayer);
-    setUsers(prev => [...prev, created]);
-    setSelectedPlayers(prev => [...prev, created]);
-    setNewPlayer({ firstName: "", lastName: "", phoneNumber: "", email: "" });
+    try {
+      const created = await api.createUser(newPlayer);
+      setUsers(prev => [...prev, created]);
+      setSelectedPlayers(prev => [...prev, created]);
+      setNewPlayer({ firstName: "", lastName: "", phoneNumber: "", email: "" });
+    } catch (err) {
+      const description = err instanceof Error ? err.message : 'Une erreur est survenue';
+      toast({
+        title: 'Erreur lors de la création du joueur',
+        description,
+        variant: 'destructive',
+      });
+    }
   };
 
   const handleSaveSession = async () => {
