@@ -104,10 +104,17 @@ const Sessions = () => {
                 </div>
               </CardContent>
               <CardActions className="flex gap-2">
-                <Button variant="outline" className="flex-1 text-black border-black hover:bg-gray-100">
-                  Modifier
+                <Button
+                  asChild
+                  variant="outline"
+                  className="flex-1 text-black border-black hover:bg-gray-100"
+                >
+                  <Link to={`/sessions/${session.id}`}>Modifier</Link>
                 </Button>
-                <Button className="flex-1 bg-destructive text-white" onClick={() => handleDelete(session.id)}>
+                <Button
+                  className="flex-1 bg-destructive text-white"
+                  onClick={() => handleDelete(session.id)}
+                >
                   <Trash2 className="w-4 h-4" />
                 </Button>
               </CardActions>

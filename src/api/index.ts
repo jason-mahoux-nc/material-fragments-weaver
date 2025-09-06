@@ -30,8 +30,11 @@ async function request<T>(url: string, options: RequestInit = {}): Promise<T> {
 
 export const api = {
   getSeances: () => request<Session[]>('/api/v1/seances/all'),
+  getSeance: (seanceId: string) => request<Session>(`/api/v1/seances/${seanceId}`),
   createSeance: (data: Record<string, unknown>) =>
     request('/api/v1/seances', { method: 'POST', body: JSON.stringify(data) }),
+  updateSeance: (seanceId: string, data: Record<string, unknown>) =>
+    request(`/api/v1/seances/${seanceId}`, { method: 'PUT', body: JSON.stringify(data) }),
   updateInscriptionPayment: (inscriptionId: string) =>
     request(`/api/v1/inscriptions/pay/${inscriptionId}`, { method: 'PUT' }),
   deleteSeance: (seanceId: string) => request(`/api/v1/seances/${seanceId}`, { method: 'DELETE' }),

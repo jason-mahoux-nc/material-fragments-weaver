@@ -1,5 +1,6 @@
 
 import { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { Layout } from "@/components/Layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -14,6 +15,10 @@ import { RichTextEditor } from "@/components/RichTextEditor";
 import type { User, NewUser } from "@/types";
 
 const SessionCreate = () => {
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const isEdit = Boolean(id);
+
   const [openSections, setOpenSections] = useState<string[]>(["planning"]);
   const [planningData, setPlanningData] = useState<{ date: string; time: string; duration: string }>({ date: "", time: "", duration: "" });
   const [contentData, setContentData] = useState<{ theme: string; description: string }>({ theme: "", description: "" });
@@ -29,6 +34,28 @@ const SessionCreate = () => {
       .then(setUsers)
       .catch(() => setUsers([]));
   }, []);
+
+  useEffect(() => {
+    if (isEdit && id) {
+      api
+        .getSeance(id)
+        .then((session) => {
+          const start = new Date(session.startHour);
+          const end = new Date(session.endHour);
+          const diff = end.getTime() - start.getTime();
+          const hours = Math.floor(diff / 3600000);
+          const minutes = Math.floor((diff % 3600000) / 60000);
+          setPlanningData({
+            date: session.date,
+            time: start.toISOString().slice(11, 16),
+            duration: minutes ? `${hours}h${minutes.toString().padStart(2, '0')}` : `${hours}h`,
+          });
+          setContentData({ theme: session.theme, description: '' });
+          setSelectedPlayers(session.players || []);
+        })
+        .catch(() => {});
+    }
+  }, [id, isEdit]);
 
   const toggleSection = (section: string) => {
     setOpenSections(prev =>
@@ -63,8 +90,15 @@ const SessionCreate = () => {
     setNewPlayer({ firstName: "", lastName: "", phoneNumber: "", email: "" });
   };
 
-  const handleCreateSession = async () => {
-    if (!planningData.date || !planningData.time || !planningData.duration || !contentData.theme || !contentData.description) {
+  const handleSaveSession = async () => {
+    if (
+      !planningData.date ||
+      !planningData.time ||
+      !planningData.duration ||
+      !contentData.theme ||
+      !contentData.description ||
+      selectedPlayers.length === 0
+    ) {
       toast({
         title: "Champs manquants",
         description: "Veuillez remplir tous les champs obligatoires",
@@ -80,26 +114,49 @@ const SessionCreate = () => {
     const start = new Date(`${planningData.date}T${planningData.time}`);
     const end = new Date(start.getTime() + hours * 3600000 + minutes * 60000);
 
-    await api.createSeance({
+    const payload = {
       date: planningData.date,
       startHour: start.toISOString(),
       endHour: end.toISOString(),
       theme: contentData.theme,
       playersId: selectedPlayers.map(p => p.id),
       seanceType: 'COLLECTIVE',
-    });
+    };
 
-    toast({
-      title: "Séance créée avec succès",
-      description: "Votre nouvelle séance a été programmée",
-      variant: "success",
-    });
+    if (isEdit && id) {
+      await api.updateSeance(id, payload);
+      toast({
+        title: "Séance modifiée avec succès",
+        description: "La séance a été mise à jour",
+        variant: "success",
+      });
+      navigate('/sessions');
+    } else {
+      await api.createSeance(payload);
+      toast({
+        title: "Séance créée avec succès",
+        description: "Votre nouvelle séance a été programmée",
+        variant: "success",
+      });
 
-    setPlanningData({ date: "", time: "", duration: "" });
-    setContentData({ theme: "", description: "" });
-    setSelectedPlayers([]);
-    setSearch("");
-    setOpenSections(["planning"]);
+      setPlanningData({ date: "", time: "", duration: "" });
+      setContentData({ theme: "", description: "" });
+      setSelectedPlayers([]);
+      setSearch("");
+      setOpenSections(["planning"]);
+    }
+  };
+
+  const handleDeleteSession = async () => {
+    if (id) {
+      await api.deleteSeance(id);
+      toast({
+        title: "Séance supprimée",
+        description: "La séance a été supprimée",
+        variant: "success",
+      });
+      navigate('/sessions');
+    }
   };
 
   const sections = [
@@ -128,10 +185,12 @@ const SessionCreate = () => {
       <div className="max-w-4xl mx-auto space-y-8 animate-fade-in">
         <div>
           <h1 className="text-4xl font-bold text-on-surface mb-2">
-            Création d'une séance
+            {isEdit ? "Modification d'une séance" : "Création d'une séance"}
           </h1>
           <p className="text-on-surface-variant text-lg">
-            Configurez votre nouvelle séance d'entraînement
+            {isEdit
+              ? "Mettez à jour les détails de votre séance"
+              : "Configurez votre nouvelle séance d'entraînement"}
           </p>
         </div>
 
@@ -265,14 +324,23 @@ const SessionCreate = () => {
           ))}
         </div>
 
-        <div className="flex justify-center pt-8">
+        <div className="flex justify-center gap-4 pt-8">
           <Button
             className="material-button px-12 py-4 text-lg"
-            onClick={handleCreateSession}
+            onClick={handleSaveSession}
             disabled={!planningData.date || !planningData.time || !planningData.duration || !contentData.theme || !contentData.description || selectedPlayers.length === 0}
           >
-            Créer la séance
+            {isEdit ? 'Modifier la séance' : 'Créer la séance'}
           </Button>
+          {isEdit && (
+            <Button
+              variant="destructive"
+              className="material-button px-12 py-4 text-lg"
+              onClick={handleDeleteSession}
+            >
+              Supprimer la séance
+            </Button>
+          )}
         </div>
       </div>
     </Layout>

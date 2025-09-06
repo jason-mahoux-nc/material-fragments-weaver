@@ -43,6 +43,14 @@ const App = () => (
             }
           />
           <Route
+            path="/sessions/:id"
+            element={
+              <PrivateRoute>
+                <SessionCreate />
+              </PrivateRoute>
+            }
+          />
+          <Route
             path="/sessions"
             element={
               <PrivateRoute>
