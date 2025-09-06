@@ -125,7 +125,7 @@ const SessionCreate = () => {
       theme: contentData.theme,
       description: contentData.description,
       playersId: selectedPlayers.map(p => p.id),
-      seanceType: 'COLLECTIVE',
+      seanceType: selectedPlayers.length > 1 ? 'COLLECTIVE' : 'INDIVIDUAL',
     };
 
     if (isEdit && id) {
