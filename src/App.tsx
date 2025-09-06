@@ -101,6 +101,14 @@ const App = () => (
             }
           />
           <Route
+            path="/users/new"
+            element={
+              <PrivateRoute>
+                <UserDetail />
+              </PrivateRoute>
+            }
+          />
+          <Route
             path="/users/:id"
             element={
               <PrivateRoute>

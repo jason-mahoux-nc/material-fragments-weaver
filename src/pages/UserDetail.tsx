@@ -7,14 +7,14 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Trash2, Save } from "lucide-react";
 import { api } from "@/api";
-import type { User } from "@/types";
+import type { User, NewUser } from "@/types";
 import { useToast } from "@/hooks/use-toast";
 
 const UserDetail = () => {
-  const { id } = useParams<{ id: string }>();
+  const { id } = useParams<{ id?: string }>();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [formData, setFormData] = useState<Partial<User>>({
+  const [formData, setFormData] = useState<NewUser>({
     firstName: "",
     lastName: "",
     email: "",
@@ -23,19 +23,33 @@ const UserDetail = () => {
 
   useEffect(() => {
     if (!id) return;
-    api.getUser(id).then(setFormData).catch(() => {
-      toast({ title: "Utilisateur introuvable", variant: "destructive" });
-    });
+    api
+      .getUser(id)
+      .then(user =>
+        setFormData({
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email ?? "",
+          phoneNumber: user.phoneNumber ?? "",
+        }),
+      )
+      .catch(() => {
+        toast({ title: "Utilisateur introuvable", variant: "destructive" });
+      });
   }, [id, toast]);
 
-  const handleChange = (field: keyof User, value: string) => {
+  const handleChange = (field: keyof NewUser, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
   const handleSave = async () => {
-    if (!id) return;
-    await api.updateUser(id, formData);
-    toast({ title: "Utilisateur mis à jour", variant: "success" });
+    if (id) {
+      await api.updateUser(id, formData);
+      toast({ title: "Utilisateur mis à jour", variant: "success" });
+    } else {
+      await api.createUser(formData);
+      toast({ title: "Utilisateur créé", variant: "success" });
+    }
     navigate("/users");
   };
 
@@ -51,11 +65,15 @@ const UserDetail = () => {
     <Layout>
       <div className="max-w-xl mx-auto space-y-8 animate-fade-in">
         <div>
-          <h1 className="text-4xl font-bold text-black mb-2">Fiche utilisateur</h1>
+          <h1 className="text-4xl font-bold text-black mb-2">
+            {id ? "Fiche utilisateur" : "Nouvel utilisateur"}
+          </h1>
         </div>
         <Card className="bg-card border border-border">
           <CardHeader>
-            <CardTitle className="text-2xl text-black">Modifier l'utilisateur</CardTitle>
+            <CardTitle className="text-2xl text-black">
+              {id ? "Modifier l'utilisateur" : "Créer un utilisateur"}
+            </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -98,18 +116,20 @@ const UserDetail = () => {
               />
             </div>
             <div className="flex justify-end gap-4 pt-4">
-              <Button
-                variant="destructive"
-                className="bg-destructive text-white hover:bg-destructive/90"
-                onClick={handleDelete}
-              >
-                <Trash2 className="w-4 h-4 mr-2" /> Supprimer
-              </Button>
+              {id && (
+                <Button
+                  variant="destructive"
+                  className="bg-destructive text-white hover:bg-destructive/90"
+                  onClick={handleDelete}
+                >
+                  <Trash2 className="w-4 h-4 mr-2" /> Supprimer
+                </Button>
+              )}
               <Button
                 className="bg-primary-m3 text-white hover:bg-primary-m3/90"
                 onClick={handleSave}
               >
-                <Save className="w-4 h-4 mr-2" /> Sauvegarder
+                <Save className="w-4 h-4 mr-2" /> {id ? "Sauvegarder" : "Créer"}
               </Button>
             </div>
           </CardContent>

@@ -3,7 +3,7 @@ import { Layout } from "@/components/Layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Trash2 } from "lucide-react";
+import { Trash2, Plus } from "lucide-react";
 import { api } from "@/api";
 import type { User } from "@/types";
 import { useNavigate } from "react-router-dom";
@@ -31,9 +31,17 @@ const Users = () => {
   return (
     <Layout>
       <div className="max-w-6xl mx-auto space-y-8 animate-fade-in">
-        <div>
-          <h1 className="text-4xl font-bold text-black mb-2">Utilisateurs</h1>
-          <p className="text-gray-600 text-lg">Gérez les utilisateurs de la plateforme</p>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-4xl font-bold text-black mb-2">Utilisateurs</h1>
+            <p className="text-gray-600 text-lg">Gérez les utilisateurs de la plateforme</p>
+          </div>
+          <Button
+            className="bg-primary-m3 text-white hover:bg-primary-m3/90"
+            onClick={() => navigate("/users/new")}
+          >
+            <Plus className="w-4 h-4 mr-2" /> Nouvel utilisateur
+          </Button>
         </div>
 
         <Card className="bg-card border border-border">
