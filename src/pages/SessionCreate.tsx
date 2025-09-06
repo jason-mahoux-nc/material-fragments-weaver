@@ -255,55 +255,53 @@ const SessionCreate = () => {
                     {section.id === "players" && (
                       <div className="p-6 bg-surface-container rounded-lg space-y-4">
                         <Input placeholder="Rechercher un joueur" value={search} onChange={e => setSearch(e.target.value)} />
-                        <div className="space-y-2 max-h-40 overflow-auto">
-                          {users
-                            .filter(u => `${u.firstName} ${u.lastName}`.toLowerCase().includes(search.toLowerCase()))
-                            .map(u => (
-                              <div key={u.id} className="flex justify-between items-center bg-surface-container-low p-2 rounded-md">
-                                <span>{u.firstName} {u.lastName}</span>
-                                <Button type="button" size="sm" onClick={() => handleAddPlayer(u)}>
-                                  Ajouter
-                                </Button>
-                              </div>
-                            ))}
-                          {users.filter(u => `${u.firstName} ${u.lastName}`.toLowerCase().includes(search.toLowerCase())).length === 0 && (
-                            <Dialog>
-                              <DialogTrigger asChild>
-                                <Button type="button" variant="outline" size="sm" className="w-full flex items-center gap-2">
-                                  <Plus className="w-4 h-4" /> Créer un joueur
-                                </Button>
-                              </DialogTrigger>
-                              <DialogContent>
-                                <DialogHeader>
-                                  <DialogTitle>Nouveau joueur</DialogTitle>
-                                </DialogHeader>
-                                <div className="space-y-4 py-4">
-                                  <div className="space-y-2">
-                                    <Label>Prénom *</Label>
-                                    <Input value={newPlayer.firstName} onChange={e => setNewPlayer(prev => ({ ...prev, firstName: e.target.value }))} required />
-                                  </div>
-                                  <div className="space-y-2">
-                                    <Label>Nom *</Label>
-                                    <Input value={newPlayer.lastName} onChange={e => setNewPlayer(prev => ({ ...prev, lastName: e.target.value }))} required />
-                                  </div>
-                                  <div className="space-y-2">
-                                    <Label>Téléphone</Label>
-                                    <Input value={newPlayer.phoneNumber} onChange={e => setNewPlayer(prev => ({ ...prev, phoneNumber: e.target.value }))} />
-                                  </div>
-                                  <div className="space-y-2">
-                                    <Label>Email</Label>
-                                    <Input type="email" value={newPlayer.email} onChange={e => setNewPlayer(prev => ({ ...prev, email: e.target.value }))} />
-                                  </div>
+                          <div className="space-y-2 max-h-40 overflow-auto">
+                            {users
+                              .filter(u => `${u.firstName} ${u.lastName}`.toLowerCase().includes(search.toLowerCase()))
+                              .map(u => (
+                                <div key={u.id} className="flex justify-between items-center bg-surface-container-low p-2 rounded-md">
+                                  <span>{u.firstName} {u.lastName}</span>
+                                  <Button type="button" size="sm" onClick={() => handleAddPlayer(u)}>
+                                    Ajouter
+                                  </Button>
                                 </div>
-                                <DialogFooter>
-                                  <Button onClick={handleCreatePlayer}>Créer</Button>
-                                </DialogFooter>
-                              </DialogContent>
-                            </Dialog>
-                          )}
-                        </div>
+                              ))}
+                          </div>
+                          <Dialog>
+                            <DialogTrigger asChild>
+                              <Button type="button" variant="outline" size="sm" className="w-full flex items-center gap-2 mt-2">
+                                <Plus className="w-4 h-4" /> Créer un joueur
+                              </Button>
+                            </DialogTrigger>
+                            <DialogContent>
+                              <DialogHeader>
+                                <DialogTitle>Nouveau joueur</DialogTitle>
+                              </DialogHeader>
+                              <div className="space-y-4 py-4">
+                                <div className="space-y-2">
+                                  <Label>Prénom *</Label>
+                                  <Input value={newPlayer.firstName} onChange={e => setNewPlayer(prev => ({ ...prev, firstName: e.target.value }))} required />
+                                </div>
+                                <div className="space-y-2">
+                                  <Label>Nom *</Label>
+                                  <Input value={newPlayer.lastName} onChange={e => setNewPlayer(prev => ({ ...prev, lastName: e.target.value }))} required />
+                                </div>
+                                <div className="space-y-2">
+                                  <Label>Téléphone</Label>
+                                  <Input value={newPlayer.phoneNumber} onChange={e => setNewPlayer(prev => ({ ...prev, phoneNumber: e.target.value }))} />
+                                </div>
+                                <div className="space-y-2">
+                                  <Label>Email</Label>
+                                  <Input type="email" value={newPlayer.email} onChange={e => setNewPlayer(prev => ({ ...prev, email: e.target.value }))} />
+                                </div>
+                              </div>
+                              <DialogFooter>
+                                <Button onClick={handleCreatePlayer}>Créer</Button>
+                              </DialogFooter>
+                            </DialogContent>
+                          </Dialog>
 
-                        <div className="space-y-2">
+                          <div className="space-y-2">
                           {selectedPlayers.map(p => (
                             <div key={p.id} className="flex justify-between items-center bg-surface-container-low p-2 rounded-md">
                               <span>{p.firstName} {p.lastName}</span>
