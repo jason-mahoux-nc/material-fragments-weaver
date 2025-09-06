@@ -18,14 +18,27 @@ const Users = () => {
     api
       .getUsers()
       .then(setUsers)
-      .catch(() => setUsers([]));
-  }, []);
+      .catch((err: unknown) => {
+        setUsers([]);
+        toast({
+          title: err instanceof Error ? err.message : "Erreur lors du chargement",
+          variant: "destructive",
+        });
+      });
+  }, [toast]);
 
   const handleDelete = async (id: string) => {
     if (!confirm("Supprimer cet utilisateur ?")) return;
-    await api.deleteUser(id);
-    setUsers(prev => prev.filter(u => u.id !== id));
-    toast({ title: "Utilisateur supprimé", variant: "success" });
+    try {
+      await api.deleteUser(id);
+      setUsers(prev => prev.filter(u => u.id !== id));
+      toast({ title: "Utilisateur supprimé", variant: "success" });
+    } catch (err) {
+      toast({
+        title: err instanceof Error ? err.message : "Erreur lors de la suppression",
+        variant: "destructive",
+      });
+    }
   };
 
   return (

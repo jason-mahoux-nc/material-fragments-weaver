@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Trash2, Save } from "lucide-react";
 import { api } from "@/api";
-import type { User, NewUser } from "@/types";
+import type { NewUser } from "@/types";
 import { useToast } from "@/hooks/use-toast";
 
 const UserDetail = () => {
@@ -33,8 +33,11 @@ const UserDetail = () => {
           phoneNumber: user.phoneNumber ?? "",
         }),
       )
-      .catch(() => {
-        toast({ title: "Utilisateur introuvable", variant: "destructive" });
+      .catch((err: unknown) => {
+        toast({
+          title: err instanceof Error ? err.message : "Erreur lors du chargement",
+          variant: "destructive",
+        });
       });
   }, [id, toast]);
 
@@ -43,22 +46,36 @@ const UserDetail = () => {
   };
 
   const handleSave = async () => {
-    if (id) {
-      await api.updateUser(id, formData);
-      toast({ title: "Utilisateur mis à jour", variant: "success" });
-    } else {
-      await api.createUser(formData);
-      toast({ title: "Utilisateur créé", variant: "success" });
+    try {
+      if (id) {
+        await api.updateUser(id, formData);
+        toast({ title: "Utilisateur mis à jour", variant: "success" });
+      } else {
+        await api.createUser(formData);
+        toast({ title: "Utilisateur créé", variant: "success" });
+      }
+      navigate("/users");
+    } catch (err) {
+      toast({
+        title: err instanceof Error ? err.message : "Erreur lors de l'enregistrement",
+        variant: "destructive",
+      });
     }
-    navigate("/users");
   };
 
   const handleDelete = async () => {
     if (!id) return;
     if (!confirm("Supprimer cet utilisateur ?")) return;
-    await api.deleteUser(id);
-    toast({ title: "Utilisateur supprimé", variant: "success" });
-    navigate("/users");
+    try {
+      await api.deleteUser(id);
+      toast({ title: "Utilisateur supprimé", variant: "success" });
+      navigate("/users");
+    } catch (err) {
+      toast({
+        title: err instanceof Error ? err.message : "Erreur lors de la suppression",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
