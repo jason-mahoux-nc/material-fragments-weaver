@@ -30,8 +30,9 @@ export interface Session {
   theme: string;
   seanceType: string;
   date: string;
-  startHour: string;
-  endHour: string;
+  hour: string;
+  durationInMinutes: number;
+  description: string;
   players?: User[];
   court?: string;
 }

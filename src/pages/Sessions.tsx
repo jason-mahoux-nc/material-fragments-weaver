@@ -87,9 +87,11 @@ const Sessions = () => {
                 <div className="flex items-center gap-3 text-gray-600">
                   <Clock className="w-5 h-5" />
                   <span>
-                    {new Date(session.startHour).toLocaleTimeString('fr-FR', {hour: '2-digit', minute: '2-digit'})}
-                    {" - "}
-                    {new Date(session.endHour).toLocaleTimeString('fr-FR', {hour: '2-digit', minute: '2-digit'})}
+                    {(() => {
+                      const start = new Date(`${session.date}T${session.hour}`);
+                      const end = new Date(start.getTime() + session.durationInMinutes * 60000);
+                      return `${start.toLocaleTimeString('fr-FR', {hour: '2-digit', minute: '2-digit'})} - ${end.toLocaleTimeString('fr-FR', {hour: '2-digit', minute: '2-digit'})}`;
+                    })()}
                   </span>
                 </div>
 

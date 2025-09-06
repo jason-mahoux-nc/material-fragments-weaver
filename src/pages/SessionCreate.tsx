@@ -40,17 +40,14 @@ const SessionCreate = () => {
       api
         .getSeance(id)
         .then((session) => {
-          const start = new Date(session.startHour);
-          const end = new Date(session.endHour);
-          const diff = end.getTime() - start.getTime();
-          const hours = Math.floor(diff / 3600000);
-          const minutes = Math.floor((diff % 3600000) / 60000);
+          const hours = Math.floor(session.durationInMinutes / 60);
+          const minutes = session.durationInMinutes % 60;
           setPlanningData({
             date: session.date,
-            time: start.toISOString().slice(11, 16),
+            time: session.hour.slice(0, 5),
             duration: minutes ? `${hours}h${minutes.toString().padStart(2, '0')}` : `${hours}h`,
           });
-          setContentData({ theme: session.theme, description: '' });
+          setContentData({ theme: session.theme, description: session.description });
           setSelectedPlayers(session.players || []);
         })
         .catch(() => {});
@@ -110,15 +107,14 @@ const SessionCreate = () => {
     const durationMatch = planningData.duration.match(/(\d+)h(?:(\d+))?/);
     const hours = durationMatch ? parseInt(durationMatch[1]) : 0;
     const minutes = durationMatch && durationMatch[2] ? parseInt(durationMatch[2]) : 0;
-
-    const start = new Date(`${planningData.date}T${planningData.time}`);
-    const end = new Date(start.getTime() + hours * 3600000 + minutes * 60000);
+    const totalMinutes = hours * 60 + minutes;
 
     const payload = {
       date: planningData.date,
-      startHour: start.toISOString(),
-      endHour: end.toISOString(),
+      hour: `${planningData.time}:00`,
+      durationInMinutes: totalMinutes,
       theme: contentData.theme,
+      description: contentData.description,
       playersId: selectedPlayers.map(p => p.id),
       seanceType: 'COLLECTIVE',
     };
