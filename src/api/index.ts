@@ -1,5 +1,12 @@
 import { getAuthService } from '@/auth/auth.service';
-import type { Participant, Session, Tournament, User, NewUser } from '@/types';
+import type {
+  Activity,
+  Participant,
+  Session,
+  Tournament,
+  User,
+  NewUser,
+} from '@/types';
 
 const BASE_URL = 'http://localhost:8089';
 
@@ -40,6 +47,7 @@ async function request<T>(url: string, options: RequestInit = {}): Promise<T> {
 }
 
 export const api = {
+  getActivities: () => request<Activity[]>('/api/v1/activities/all'),
   getSeances: () => request<Session[]>('/api/v1/seances/all'),
   getSeance: (seanceId: string) => request<Session>(`/api/v1/seances/${seanceId}`),
   createSeance: (data: Record<string, unknown>) =>
