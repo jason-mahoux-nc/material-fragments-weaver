@@ -1,4 +1,5 @@
 import { getAuthService } from '@/auth/auth.service';
+import type { Participant, Session, Tournament, User, NewUser } from '@/types';
 
 const BASE_URL = 'http://localhost:8089';
 
@@ -28,21 +29,25 @@ async function request<T>(url: string, options: RequestInit = {}): Promise<T> {
 }
 
 export const api = {
-  getSeances: () => request<unknown[]>('/api/v1/seances/all'),
+  getSeances: () => request<Session[]>('/api/v1/seances/all'),
   createSeance: (data: Record<string, unknown>) =>
     request('/api/v1/seances', { method: 'POST', body: JSON.stringify(data) }),
   updateInscriptionPayment: (inscriptionId: string) =>
     request(`/api/v1/inscriptions/pay/${inscriptionId}`, { method: 'PUT' }),
   deleteSeance: (seanceId: string) => request(`/api/v1/seances/${seanceId}`, { method: 'DELETE' }),
 
-  getTournaments: () => request<unknown[]>('/api/v1/tournaments/all'),
+  getTournaments: () => request<Tournament[]>('/api/v1/tournaments/all'),
   createTournament: (data: Record<string, unknown>) =>
     request('/api/v1/tournaments', { method: 'POST', body: JSON.stringify(data) }),
   deleteTournament: (tournamentId: string) => request(`/api/v1/tournaments/${tournamentId}`, { method: 'DELETE' }),
 
   getParticipants: (tournamentId: string) =>
-    request<unknown[]>(`/api/v1/inscriptions/tournament/${tournamentId}`),
+    request<Participant[]>(`/api/v1/inscriptions/tournament/${tournamentId}`),
   deleteInscription: (inscriptionId: string) => request(`/api/v1/inscriptions/${inscriptionId}`, { method: 'DELETE' }),
   createInscription: (data: Record<string, unknown>) =>
     request('/api/v1/inscriptions', { method: 'POST', body: JSON.stringify(data) }),
+
+  getUsers: () => request<User[]>('/api/v1/users/all'),
+  createUser: (data: NewUser) =>
+    request<User>('/api/v1/users/new', { method: 'POST', body: JSON.stringify(data) }),
 };

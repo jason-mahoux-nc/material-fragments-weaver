@@ -13,9 +13,10 @@ import { Calendar, Clock, Users, MapPin, Plus, Trash2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { api } from "@/api";
+import type { Session as SessionType } from "@/types";
 
 const Sessions = () => {
-  const [sessions, setSessions] = useState<any[]>([]);
+  const [sessions, setSessions] = useState<SessionType[]>([]);
 
   useEffect(() => {
     api
