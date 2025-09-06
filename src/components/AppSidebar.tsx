@@ -76,13 +76,15 @@ export function AppSidebar() {
   const isMobile = useIsMobile();
   const isCollapsed = !open && !isMobile;
 
-  const toggleGroup = (title: string) => {
-    setOpenGroups(prev => 
-      prev.includes(title) 
-        ? prev.filter(item => item !== title)
-        : [...prev, title]
-    );
-  };
+  const setGroupOpen = (title: string, isOpen: boolean) => {
+    setOpenGroups((prev) => {
+      const exists = prev.includes(title)
+      if (isOpen) {
+        return exists ? prev : [...prev, title]
+      }
+      return prev.filter((item) => item !== title)
+    })
+  }
 
   return (
     <Sidebar className="border-r border-surface-variant bg-surface">
@@ -102,9 +104,9 @@ export function AppSidebar() {
             {menuItems.map((item) => (
               <SidebarMenuItem key={item.title}>
                 {item.subItems ? (
-                  <Collapsible 
+                  <Collapsible
                     open={openGroups.includes(item.title) && !isCollapsed}
-                    onOpenChange={() => !isCollapsed && toggleGroup(item.title)}
+                    onOpenChange={(open) => !isCollapsed && setGroupOpen(item.title, open)}
                   >
                     <CollapsibleTrigger asChild>
                       <SidebarMenuButton 
