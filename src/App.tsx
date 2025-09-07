@@ -15,6 +15,8 @@ import Sessions from "./pages/Sessions";
 import Tournaments from "./pages/Tournaments";
 import Users from "./pages/Users";
 import UserDetail from "./pages/UserDetail";
+import Items from "./pages/Items";
+import ItemDetail from "./pages/ItemDetail";
 import { PrivateRoute } from "./components/PrivateRoute";
 
 const queryClient = new QueryClient();
@@ -113,6 +115,30 @@ const App = () => (
             element={
               <PrivateRoute>
                 <UserDetail />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/stock/items"
+            element={
+              <PrivateRoute>
+                <Items />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/stock/items/new"
+            element={
+              <PrivateRoute>
+                <ItemDetail />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/stock/items/:id"
+            element={
+              <PrivateRoute>
+                <ItemDetail />
               </PrivateRoute>
             }
           />

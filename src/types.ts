@@ -45,3 +45,16 @@ export interface Activity {
   participantsCount: number;
   type: 'TOURNAMENT' | 'SEANCE';
 }
+
+// Stock / Items (aligné au swagger)
+export interface Item {
+  id: string;
+  title?: string;
+  purchasePrice?: number;
+  salePrice?: number;
+  description?: string;
+  quantityInStock?: number;
+  image?: string;
+}
+
+export type NewItem = Partial<Omit<Item, 'id'>>;

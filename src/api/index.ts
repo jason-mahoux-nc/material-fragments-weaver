@@ -6,9 +6,11 @@ import type {
   Tournament,
   User,
   NewUser,
+  Item,
+  NewItem,
 } from '@/types';
 
-const BASE_URL = 'http://localhost:8089';
+export const BASE_URL = 'http://localhost:8089';
 
 async function request<T>(url: string, options: RequestInit = {}): Promise<T> {
   const auth = getAuthService() as import('@/auth/auth.service').AuthService & {
@@ -17,15 +19,17 @@ async function request<T>(url: string, options: RequestInit = {}): Promise<T> {
   if (typeof auth.ready === 'function') {
     await auth.ready();
   }
-  const headers: Record<string, string> = {
-    'Content-Type': 'application/json',
-  };
+  const isFormData = typeof FormData !== 'undefined' && options.body instanceof FormData;
+  const headers: Record<string, string> = {};
+  if (!isFormData) {
+    headers['Content-Type'] = 'application/json';
+  }
   const token = auth.getToken();
   if (token) {
     headers['Authorization'] = `Bearer ${token}`;
   }
   const response = await fetch(`${BASE_URL}${url}`, {
-    headers,
+    headers: { ...headers, ...(options.headers as Record<string, string> | undefined) },
     ...options,
   });
   const text = await response.text();
@@ -76,4 +80,20 @@ export const api = {
   updateUser: (userId: string, data: Partial<NewUser>) =>
     request(`/api/v1/users/${userId}`, { method: 'PUT', body: JSON.stringify(data) }),
   deleteUser: (userId: string) => request(`/api/v1/users/${userId}`, { method: 'DELETE' }),
+};
+
+// Items API
+export const stockApi = {
+  getItems: () => request<Item[]>('/api/v1/items/all'),
+  createItem: (data: NewItem) =>
+    request<Item>('/api/v1/items', { method: 'POST', body: JSON.stringify(data) }),
+  getItem: (itemId: string) => request<Item>(`/api/v1/items/${itemId}`),
+  updateItem: (itemId: string, data: NewItem) =>
+    request<Item>(`/api/v1/items/${itemId}`, { method: 'PUT', body: JSON.stringify(data) }),
+  deleteItem: (itemId: string) => request(`/api/v1/items/${itemId}`, { method: 'DELETE' }),
+  uploadItemImage: (itemId: string, file: File) => {
+    const fd = new FormData();
+    fd.append('file', file);
+    return request<Item>(`/api/v1/items/${itemId}/image`, { method: 'POST', body: fd });
+  },
 };

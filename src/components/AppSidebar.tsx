@@ -55,6 +55,7 @@ const menuItems = [
     title: "Gestion de stock",
     icon: Warehouse,
     subItems: [
+      { title: "Gestion des articles", url: "/stock/items" },
     ]
   },
   {
