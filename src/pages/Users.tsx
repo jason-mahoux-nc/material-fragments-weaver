@@ -1,9 +1,16 @@
 import { useEffect, useState } from "react";
 import { Layout } from "@/components/Layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Trash2, Plus } from "lucide-react";
+import { Trash2, Plus, Phone } from "lucide-react";
 import { api } from "@/api";
 import type { User } from "@/types";
 import { useNavigate } from "react-router-dom";
@@ -62,37 +69,80 @@ const Users = () => {
             <CardTitle className="text-2xl text-black">Liste des utilisateurs</CardTitle>
           </CardHeader>
           <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Prénom</TableHead>
-                  <TableHead>Nom</TableHead>
-                  <TableHead>Email</TableHead>
-                  <TableHead>Téléphone</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {users.map((user) => (
-                  <TableRow key={user.id} className="cursor-pointer" onClick={() => navigate(`/users/${user.id}`)}>
-                    <TableCell>{user.firstName}</TableCell>
-                    <TableCell className="font-medium">{user.lastName}</TableCell>
-                    <TableCell>{user.email}</TableCell>
-                    <TableCell>{user.phoneNumber}</TableCell>
-                    <TableCell className="text-right" onClick={(e) => e.stopPropagation()}>
+            <div className="hidden md:block overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Prénom</TableHead>
+                    <TableHead>Nom</TableHead>
+                    <TableHead>Email</TableHead>
+                    <TableHead>Téléphone</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {users.map((user) => (
+                    <TableRow
+                      key={user.id}
+                      className="cursor-pointer"
+                      onClick={() => navigate(`/users/${user.id}`)}
+                    >
+                      <TableCell>{user.firstName}</TableCell>
+                      <TableCell className="font-medium">{user.lastName}</TableCell>
+                      <TableCell>{user.email}</TableCell>
+                      <TableCell>{user.phoneNumber}</TableCell>
+                      <TableCell
+                        className="text-right"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          className="bg-destructive text-white hover:bg-destructive/90"
+                          onClick={() => handleDelete(user.id)}
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+            <div className="space-y-4 md:hidden">
+              {users.map((user) => (
+                <Card
+                  key={user.id}
+                  className="border border-border bg-background cursor-pointer"
+                  onClick={() => navigate(`/users/${user.id}`)}
+                >
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-black">
+                      {user.firstName} {user.lastName}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-2 text-black">
+                    <p className="text-sm">{user.email}</p>
+                    <div className="flex items-center gap-2 text-sm">
+                      <Phone className="w-4 h-4" /> {user.phoneNumber}
+                    </div>
+                    <div className="flex justify-end pt-2">
                       <Button
                         variant="destructive"
                         size="sm"
                         className="bg-destructive text-white hover:bg-destructive/90"
-                        onClick={() => handleDelete(user.id)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDelete(user.id);
+                        }}
                       >
                         <Trash2 className="w-4 h-4" />
                       </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
             {users.length === 0 && (
               <p className="text-center text-black py-6">Aucun utilisateur trouvé</p>
             )}
