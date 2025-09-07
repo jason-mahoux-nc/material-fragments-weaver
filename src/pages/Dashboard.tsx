@@ -87,14 +87,6 @@ const Dashboard = () => {
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="hover:bg-primary-m3/10"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <Edit className="w-4 h-4 text-primary-m3" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
                       className="hover:bg-error/10"
                       onClick={(e) => handleDelete(e, activity)}
                     >
