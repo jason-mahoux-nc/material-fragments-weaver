@@ -36,3 +36,12 @@ export interface Session {
   players?: User[];
   court?: string;
 }
+
+export interface Activity {
+  id: string;
+  title: string;
+  date: string;
+  hour: string;
+  participantsCount: number;
+  type: 'TOURNAMENT' | 'SEANCE';
+}
