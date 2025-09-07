@@ -7,10 +7,9 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-  CardActions,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Calendar, Clock, Edit } from "lucide-react";
+import { Calendar, Clock, Edit, Trash } from "lucide-react";
 import { api } from "@/api";
 import type { Activity } from "@/types";
 import { useNavigate } from "react-router-dom";
@@ -18,6 +17,23 @@ import { useNavigate } from "react-router-dom";
 const Dashboard = () => {
   const [activities, setActivities] = useState<Activity[]>([]);
   const navigate = useNavigate();
+
+  const handleDelete = async (
+    e: React.MouseEvent,
+    activity: Activity
+  ): Promise<void> => {
+    e.stopPropagation();
+    try {
+      if (activity.type === "TOURNAMENT") {
+        await api.deleteTournament(activity.id);
+      } else {
+        await api.deleteSeance(activity.id);
+      }
+      setActivities((prev) => prev.filter((a) => a.id !== activity.id));
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
     void (async () => {
@@ -67,14 +83,24 @@ const Dashboard = () => {
                       {activity.type === "TOURNAMENT" ? "Tournoi" : "Séance"}
                     </CardDescription>
                   </div>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="hover:bg-primary-m3/10"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <Edit className="w-4 h-4 text-primary-m3" />
-                  </Button>
+                  <div className="flex gap-1">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="hover:bg-primary-m3/10"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <Edit className="w-4 h-4 text-primary-m3" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="hover:bg-error/10"
+                      onClick={(e) => handleDelete(e, activity)}
+                    >
+                      <Trash className="w-4 h-4 text-error" />
+                    </Button>
+                  </div>
                 </div>
               </CardHeader>
               <CardContent>
@@ -91,14 +117,6 @@ const Dashboard = () => {
                   </div>
                 </div>
               </CardContent>
-              <CardActions className="justify-end">
-                <Button
-                  className="material-button-outlined"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  Modifier
-                </Button>
-              </CardActions>
             </Card>
           ))}
         </div>
