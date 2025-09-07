@@ -51,17 +51,21 @@ const Users = () => {
   return (
     <Layout>
       <div className="max-w-6xl mx-auto space-y-8 animate-fade-in">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <h1 className="text-4xl font-bold text-black mb-2">Utilisateurs</h1>
             <p className="text-gray-600 text-lg">Gérez les utilisateurs de la plateforme</p>
           </div>
-          <Button
-            className="bg-primary-m3 text-white hover:bg-primary-m3/90"
-            onClick={() => navigate("/users/new")}
-          >
-            <Plus className="w-4 h-4 mr-2" /> Nouvel utilisateur
-          </Button>
+          <div className="flex flex-col sm:flex-row gap-2 sm:items-center">
+            <Button
+              className="w-full bg-primary-m3 text-white hover:bg-primary-m3/90"
+              aria-label="Nouvel utilisateur"
+              onClick={() => navigate("/users/new")}
+            >
+              <Plus className="w-4 h-4 md:mr-2" />
+              <span>Nouvel utilisateur</span>
+            </Button>
+          </div>
         </div>
 
         <div className="space-y-4 md:hidden">

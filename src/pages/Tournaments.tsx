@@ -47,7 +47,7 @@ const Tournaments = () => {
   return (
     <Layout>
       <div className="max-w-6xl mx-auto space-y-8 animate-fade-in">
-        <div className="flex justify-between items-center">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <h1 className="text-4xl font-bold text-black mb-2">
               Mes prochains tournois
@@ -56,12 +56,14 @@ const Tournaments = () => {
               Suivez vos inscriptions et découvrez de nouveaux tournois
             </p>
           </div>
-          <Link to="/tournament/create">
-            <Button className="bg-primary-m3 hover:bg-primary-m3/90 text-white">
-              <Plus className="w-4 h-4 mr-2" />
-              Créer un tournoi
-            </Button>
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-2 sm:items-center">
+            <Link to="/tournament/create">
+              <Button className="w-full bg-primary-m3 hover:bg-primary-m3/90 text-white" aria-label="Créer un tournoi">
+                <Plus className="w-4 h-4 md:mr-2" />
+                <span>Créer un tournoi</span>
+              </Button>
+            </Link>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -129,9 +131,9 @@ const Tournaments = () => {
                 Créez votre premier tournoi ou inscrivez-vous à un tournoi existant
               </p>
               <Link to="/tournament/create">
-                <Button className="bg-primary-m3 hover:bg-primary-m3/90 text-white">
-                  <Plus className="w-4 h-4 mr-2" />
-                  Créer un tournoi
+                <Button className="bg-primary-m3 hover:bg-primary-m3/90 text-white" aria-label="Créer un tournoi">
+                  <Plus className="w-4 h-4 md:mr-2" />
+                  <span className="hidden md:inline">Créer un tournoi</span>
                 </Button>
               </Link>
             </CardContent>

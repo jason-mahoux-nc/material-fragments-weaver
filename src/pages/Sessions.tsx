@@ -44,7 +44,7 @@ const Sessions = () => {
   return (
     <Layout>
       <div className="max-w-6xl mx-auto space-y-8 animate-fade-in">
-        <div className="flex justify-between items-center">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <h1 className="text-4xl font-bold text-black mb-2">
               Mes prochaines séances
@@ -53,12 +53,14 @@ const Sessions = () => {
               Gérez vos séances d'entraînement et matchs à venir
             </p>
           </div>
-          <Link to="/session/create">
-            <Button className="bg-primary-m3 hover:bg-primary-m3/90 text-white">
-              <Plus className="w-4 h-4 mr-2" />
-              Créer une séance
-            </Button>
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-2 sm:items-center">
+            <Link to="/session/create">
+              <Button className="w-full bg-primary-m3 hover:bg-primary-m3/90 text-white" aria-label="Créer une séance">
+                <Plus className="w-4 h-4 md:mr-2" />
+                <span>Créer une séance</span>
+              </Button>
+            </Link>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -135,9 +137,9 @@ const Sessions = () => {
                 Créez votre première séance d'entraînement ou planifiez un match
               </p>
               <Link to="/session/create">
-                <Button className="bg-primary-m3 hover:bg-primary-m3/90 text-white">
-                  <Plus className="w-4 h-4 mr-2" />
-                  Créer une séance
+                <Button className="bg-primary-m3 hover:bg-primary-m3/90 text-white" aria-label="Créer une séance">
+                  <Plus className="w-4 h-4 md:mr-2" />
+                  <span className="hidden md:inline">Créer une séance</span>
                 </Button>
               </Link>
             </CardContent>
