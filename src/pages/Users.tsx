@@ -64,12 +64,44 @@ const Users = () => {
           </Button>
         </div>
 
-        <Card className="bg-card border border-border">
-          <CardHeader>
-            <CardTitle className="text-2xl text-black">Liste des utilisateurs</CardTitle>
-          </CardHeader>
+        <div className="space-y-4 md:hidden">
+          {users.map((user) => (
+              <Card
+                  key={user.id}
+                  className="border border-border bg-background cursor-pointer"
+                  onClick={() => navigate(`/users/${user.id}`)}
+              >
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-black">
+                    {user.firstName} {user.lastName}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-2 text-black">
+                  <p className="text-sm">{user.email}</p>
+                  <div className="flex items-center gap-2 text-sm">
+                    <Phone className="w-4 h-4" /> {user.phoneNumber}
+                  </div>
+                  <div className="flex justify-end pt-2">
+                    <Button
+                        variant="destructive"
+                        size="sm"
+                        className="bg-destructive text-white hover:bg-destructive/90"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDelete(user.id);
+                        }}
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+          ))}
+        </div>
+
+        <Card className="hidden md:block bg-card border border-border">
           <CardContent>
-            <div className="hidden md:block overflow-x-auto">
+            <div className="overflow-x-auto">
               <Table>
                 <TableHeader>
                   <TableRow>
@@ -108,40 +140,6 @@ const Users = () => {
                   ))}
                 </TableBody>
               </Table>
-            </div>
-            <div className="space-y-4 md:hidden">
-              {users.map((user) => (
-                <Card
-                  key={user.id}
-                  className="border border-border bg-background cursor-pointer"
-                  onClick={() => navigate(`/users/${user.id}`)}
-                >
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-black">
-                      {user.firstName} {user.lastName}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-2 text-black">
-                    <p className="text-sm">{user.email}</p>
-                    <div className="flex items-center gap-2 text-sm">
-                      <Phone className="w-4 h-4" /> {user.phoneNumber}
-                    </div>
-                    <div className="flex justify-end pt-2">
-                      <Button
-                        variant="destructive"
-                        size="sm"
-                        className="bg-destructive text-white hover:bg-destructive/90"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleDelete(user.id);
-                        }}
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
             </div>
             {users.length === 0 && (
               <p className="text-center text-black py-6">Aucun utilisateur trouvé</p>

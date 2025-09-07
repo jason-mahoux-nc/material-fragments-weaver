@@ -109,9 +109,71 @@ const Participants = () => {
           </div>
         </div>
 
-        <Card className="material-surface">
+        <div className="space-y-4 md:hidden">
+          {participants.map((participant) => (
+              <Card key={participant.id} className="border border-border bg-background">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-black">
+                    {participant.user.firstName} {participant.user.lastName}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-2 text-black">
+                  <div className="flex items-center gap-2 text-sm">
+                    <Phone className="w-4 h-4" />
+                    {participant.user.phoneNumber}
+                  </div>
+                  <div className="flex items-center justify-between text-sm">
+                    <span>Avec repas ?</span>
+                    {participant.takeEat ? (
+                        <CheckCircle className="w-5 h-5 text-green-600" />
+                    ) : (
+                        <X className="w-5 h-5 text-red-500" />
+                    )}
+                  </div>
+                  <div className="flex items-center justify-between text-sm">
+                    <span>Paiement</span>
+                    {participant.hasPaid ? (
+                        <Badge className="bg-green-100 text-black border-green-200">
+                          <CheckCircle className="w-3 h-3 mr-1" />
+                          Validé
+                        </Badge>
+                    ) : (
+                        <Badge variant="destructive" className="bg-destructive/20 text-black border-destructive/30">
+                          <X className="w-3 h-3 mr-1" />
+                          En attente
+                        </Badge>
+                    )}
+                  </div>
+                  <div className="flex items-center justify-between font-semibold">
+                    <span>Prix total</span>
+                    {participant.totalPrice.toFixed(1)} €
+                  </div>
+                  <div className="flex justify-end gap-2 pt-2">
+                    <Button
+                        size="sm"
+                        className="bg-primary text-white hover:bg-primary/90 text-xs px-3"
+                        onClick={() => handleValidatePayment(participant.id)}
+                    >
+                      <CreditCard className="w-3 h-3 mr-1" />
+                      Valider
+                    </Button>
+                    <Button
+                        size="sm"
+                        variant="destructive"
+                        className="bg-destructive text-white hover:bg-destructive/90 text-xs px-3"
+                        onClick={() => handleDeleteParticipant(participant.id)}
+                    >
+                      <Trash2 className="w-3 h-3" />
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+          ))}
+        </div>
+
+        <Card className="material-surface hidden md:block">
           <CardContent>
-            <div className="hidden md:block overflow-x-auto">
+            <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-border">
@@ -182,68 +244,6 @@ const Participants = () => {
                   ))}
                 </tbody>
               </table>
-            </div>
-
-            <div className="space-y-4 md:hidden">
-              {participants.map((participant) => (
-                <Card key={participant.id} className="border border-border bg-background">
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-black">
-                      {participant.user.firstName} {participant.user.lastName}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-2 text-black">
-                    <div className="flex items-center gap-2 text-sm">
-                      <Phone className="w-4 h-4" />
-                      {participant.user.phoneNumber}
-                    </div>
-                    <div className="flex items-center justify-between text-sm">
-                      <span>Avec repas ?</span>
-                      {participant.takeEat ? (
-                        <CheckCircle className="w-5 h-5 text-green-600" />
-                      ) : (
-                        <X className="w-5 h-5 text-red-500" />
-                      )}
-                    </div>
-                    <div className="flex items-center justify-between text-sm">
-                      <span>Paiement</span>
-                      {participant.hasPaid ? (
-                        <Badge className="bg-green-100 text-black border-green-200">
-                          <CheckCircle className="w-3 h-3 mr-1" />
-                          Validé
-                        </Badge>
-                      ) : (
-                        <Badge variant="destructive" className="bg-destructive/20 text-black border-destructive/30">
-                          <X className="w-3 h-3 mr-1" />
-                          En attente
-                        </Badge>
-                      )}
-                    </div>
-                    <div className="flex items-center justify-between font-semibold">
-                      <span>Prix total</span>
-                      {participant.totalPrice.toFixed(1)} €
-                    </div>
-                    <div className="flex justify-end gap-2 pt-2">
-                      <Button
-                        size="sm"
-                        className="bg-primary text-white hover:bg-primary/90 text-xs px-3"
-                        onClick={() => handleValidatePayment(participant.id)}
-                      >
-                        <CreditCard className="w-3 h-3 mr-1" />
-                        Valider
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="destructive"
-                        className="bg-destructive text-white hover:bg-destructive/90 text-xs px-3"
-                        onClick={() => handleDeleteParticipant(participant.id)}
-                      >
-                        <Trash2 className="w-3 h-3" />
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
             </div>
 
             {participants.length === 0 && (
