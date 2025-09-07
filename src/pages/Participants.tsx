@@ -77,7 +77,7 @@ const Participants = () => {
   return (
     <Layout>
       <div className="space-y-8 animate-fade-in">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <h1 className="text-4xl font-bold text-black mb-2">
               Liste des participants
@@ -86,38 +86,32 @@ const Participants = () => {
               Gérez les inscriptions aux tournois
             </p>
           </div>
-          <Button
-            className="bg-primary text-white hover:bg-primary/90"
-            onClick={handleAddInscription}
-          >
-            <UserPlus className="w-4 h-4 mr-2" />
-            Ajouter une inscription
-          </Button>
+          <div className="flex flex-col sm:flex-row gap-2 sm:items-center">
+            <Select value={tournamentId} onValueChange={setTournamentId}>
+              <SelectTrigger className="w-full sm:w-64 border-border bg-background text-black">
+                <SelectValue placeholder="Sélectionner" />
+              </SelectTrigger>
+              <SelectContent className="bg-background border border-border">
+                {tournaments.map((t) => (
+                  <SelectItem key={t.id} value={t.id} className="text-black hover:bg-accent">
+                    {t.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Button
+              className="bg-primary text-white hover:bg-primary/90"
+              onClick={handleAddInscription}
+            >
+              <UserPlus className="w-4 h-4 mr-2" />
+              Ajouter une inscription
+            </Button>
+          </div>
         </div>
 
         <Card className="material-surface">
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <CardTitle className="flex items-center gap-3 text-2xl text-black">
-                <Trophy className="w-6 h-6 text-primary" />
-                Tournoi sélectionné
-              </CardTitle>
-              <Select value={tournamentId} onValueChange={setTournamentId}>
-                <SelectTrigger className="w-64 border-border bg-background text-black">
-                  <SelectValue placeholder="Sélectionner" />
-                </SelectTrigger>
-                <SelectContent className="bg-background border border-border">
-                  {tournaments.map(t => (
-                    <SelectItem key={t.id} value={t.id} className="text-black hover:bg-accent">
-                      {t.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </CardHeader>
           <CardContent>
-            <div className="overflow-x-auto">
+            <div className="hidden md:block overflow-x-auto">
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-border">
@@ -188,6 +182,68 @@ const Participants = () => {
                   ))}
                 </tbody>
               </table>
+            </div>
+
+            <div className="space-y-4 md:hidden">
+              {participants.map((participant) => (
+                <Card key={participant.id} className="border border-border bg-background">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-black">
+                      {participant.user.firstName} {participant.user.lastName}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-2 text-black">
+                    <div className="flex items-center gap-2 text-sm">
+                      <Phone className="w-4 h-4" />
+                      {participant.user.phoneNumber}
+                    </div>
+                    <div className="flex items-center justify-between text-sm">
+                      <span>Avec repas ?</span>
+                      {participant.takeEat ? (
+                        <CheckCircle className="w-5 h-5 text-green-600" />
+                      ) : (
+                        <X className="w-5 h-5 text-red-500" />
+                      )}
+                    </div>
+                    <div className="flex items-center justify-between text-sm">
+                      <span>Paiement</span>
+                      {participant.hasPaid ? (
+                        <Badge className="bg-green-100 text-black border-green-200">
+                          <CheckCircle className="w-3 h-3 mr-1" />
+                          Validé
+                        </Badge>
+                      ) : (
+                        <Badge variant="destructive" className="bg-destructive/20 text-black border-destructive/30">
+                          <X className="w-3 h-3 mr-1" />
+                          En attente
+                        </Badge>
+                      )}
+                    </div>
+                    <div className="flex items-center justify-between font-semibold">
+                      <span>Prix total</span>
+                      {participant.totalPrice.toFixed(1)} €
+                    </div>
+                    <div className="flex justify-end gap-2 pt-2">
+                      <Button
+                        size="sm"
+                        className="bg-primary text-white hover:bg-primary/90 text-xs px-3"
+                        onClick={() => handleValidatePayment(participant.id)}
+                      >
+                        <CreditCard className="w-3 h-3 mr-1" />
+                        Valider
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="destructive"
+                        className="bg-destructive text-white hover:bg-destructive/90 text-xs px-3"
+                        onClick={() => handleDeleteParticipant(participant.id)}
+                      >
+                        <Trash2 className="w-3 h-3" />
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
 
             {participants.length === 0 && (
